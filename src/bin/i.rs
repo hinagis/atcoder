@@ -4,14 +4,21 @@ use proconio::input;
 //#[fastout]
 fn main() {
     input! {
-        n: i32,
-        d: [(i32, i32); n],
+        n: usize,
+        p: [f64; n],
     }
-    let r = n;
-    for (a, b) in d {
-        todo!();
+    let mut dp = vec![0.0; n + 1];
+    dp[0] = 1.0;
+    for i in 0..n {
+        for j in (1..=(i + 1)).rev() {
+            dp[j] = dp[j] * (1.0 - p[i]) + dp[j - 1] * p[i];
+        }
+        dp[0] = dp[0] * (1.0 - p[i]);
     }
 
-    println!("Yes");
+    let mut r = 0.0;
+    for i in (n / 2 + 1)..=n {
+        r += dp[i];
+    }
     println!("{}", r);
 }

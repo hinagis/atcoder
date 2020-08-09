@@ -35,17 +35,35 @@ macro_rules! read_value {
     ($iter:expr, $t:ty) => {$iter.next().unwrap().parse::<$t>().expect("Parse error")};
 }
 
+const M: u64 = 1000_000_007;
 
 fn main() {
     input! {
         h: usize,
-        _w: usize,
+        w: usize,
         a: [chars; h],
     }
-    for line in a {
-        for c in line {
-            print!("{}", c);
+    let mut dp = vec![vec![0u64; w]; h];
+    dp[0][0] = 1;
+    for i in 1..h {
+        if a[i][0] == '.' {
+            dp[i][0] = dp[i - 1][0];
         }
-        println!("");
     }
+    for j in 1..w {
+        if a[0][j] == '.' {
+            dp[0][j] = dp[0][j - 1];
+        }
+    }
+    for i in 1..h {
+        for j in 1..w {
+            if a[i][j] == '.' {
+                dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+                if dp[i][j] > M {
+                    dp[i][j] -= M;
+                }
+            }
+        }
+    }
+    print!("{}", dp[h - 1][w - 1]);
 }

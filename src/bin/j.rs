@@ -19,14 +19,14 @@ fn main() {
     input! {
         n: usize,
     }
-    let mut ijk = [0usize; 3];
+    let mut ijk = [0; 3];
     for _ in 0..n {
         input! {
             a: usize,
         }
         ijk[a - 1] += 1;
     }
-    let mut dp = vec![vec![vec![-1.0f64; n + 1]; n + 1]; n + 1];
+    let mut dp = vec![vec![vec![-1.0; n + 1]; n + 1]; n + 1];
 
     println!("{}", calc(&mut dp, n, ijk[0], ijk[1], ijk[2]));
 }

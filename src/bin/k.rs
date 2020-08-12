@@ -1,17 +1,20 @@
-//use proconio::{input, fastout};
 use proconio::input;
 
-//#[fastout]
 fn main() {
     input! {
-        n: i32,
-        d: [(i32, i32); n],
-    }
-    let r = n;
-    for (a, b) in d {
-        todo!();
+        n: usize,
+        k: usize,
+        a: [usize; n],
     }
 
-    println!("Yes");
-    println!("{}", r);
+    let mut dp = vec![false; k + 1];
+
+    for i in 1..=k {
+        for j in 0..n {
+            if i >= a[j] && dp[i - a[j]] == false {
+                dp[i] = true;
+            }
+        }
+    }
+    println!("{}", if dp[k] {"First"} else { "Second" });
 }

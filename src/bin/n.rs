@@ -4,26 +4,41 @@ fn main() {
         a: [u64; n],
     }
 
-
-    println!("{}", calc(a));
+    println!("{}", DP::new(n, a).calc(0, n - 1));
 }
 
-fn calc(a: Vec<u64>) -> u64 {
-    let n = a.len();
-    if n == 2 {
-        a[0] + a[1]
-    } else {
-        let mut v = 0;
-        for i in 0..(n - 1) {
-            let mut a = a.clone();
-            a[i] += a[i + 1];
-            a.remove(i + 1);
-            v = if v == 0 {
-                a[i] + calc(a)
-            } else {
-                std::cmp::min(v, a[i] + calc(a))
-            }
+struct DP {
+    dp: Vec<Vec<Option<u64>>>,
+    cum: Vec<u64>,
+}
+
+impl DP {
+    fn new(n: usize, a: Vec<u64>) -> DP {
+        let mut cum = vec![0; n + 1];
+        for i in 1..=n {
+            cum[i] = cum[i - 1] + a[i - 1];
         }
-        v
+        DP {
+            dp: vec![vec![None; n]; n],
+            cum: cum,
+        }
+    }
+
+    fn calc(&mut self, l: usize, r: usize) -> u64 {
+        if let Some(v) = self.dp[l][r] {
+            v
+        } else {
+            let v = if l == r {
+                0
+            } else {
+                let mut v = std::u64::MAX;
+                for m in l..r {
+                    v = std::cmp::min(v, self.calc(l, m) + self.calc(m + 1, r))
+                }
+                v + self.cum[r + 1] - self.cum[l]
+            };
+            self.dp[l][r] = Some(v);
+            v
+        }
     }
 }

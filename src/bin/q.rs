@@ -1,15 +1,12 @@
-//use proconio::{input, fastout};
-use proconio::input;
-
-//#[fastout]
 fn main() {
-    input! {
-        n: i32,
-        d: [(i32, i32); n],
+    proconio::input! {
+        n: usize,
+        a: [u64; n],
     }
-    let r = n;
-    for (a, b) in d {
-        todo!();
+
+    let mut r = 0;
+    for i in 0..n {
+        r += a[i];
     }
 
     println!("Yes");

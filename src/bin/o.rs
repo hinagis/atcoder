@@ -13,27 +13,48 @@ fn main() {
         }
     }
 
-    let mut dp = vec![vec![None; 1 << n]; n + 1];
-    println!("{}", calc(0, n, 0, &a, &mut dp));
+    println!("{}", DP::new(n, &a).calc(0));
 }
 
-fn calc(i: usize, n: usize, p: usize, a: &Vec<usize>, dp: &mut Vec<Vec<Option<u64>>>) -> u64 {
-    if let Some(v) = dp[i][p] {
-        v
-    } else {
-        let v = if i == n {
-            1
-        } else {
-            let rest = a[i] & !p;
-            let mut v = 0;
-            for j in 0..n {
-                if (rest >> j) & 1 == 1 {
-                    v = (v + calc(i + 1, n, p | (1 << j), a, dp)) % M;
-                }
-            }
+struct DP<'a> {
+    dp: Vec<Option<u64>>,
+    b: usize,
+    a: &'a Vec<usize>,
+}
+
+impl<'a> DP<'a> {
+    fn new(n: usize, a: &'a Vec<usize>) -> DP<'a> {
+        let mut b = 0;
+        for i in 0..n {
+            b |= 1 << i;
+        }
+        DP {
+            dp: vec![None; 1 << n],
+            b: b,
+            a: a,
+        }
+    }
+
+    fn calc(&mut self, p: usize) -> u64 {
+        if let Some(v) = self.dp[p] {
             v
-        };
-        dp[i][p] = Some(v);
-        v
+        } else {
+            let v = if p == self.b {
+                1
+            } else {
+                let rest = self.a[p.count_ones() as usize] & !p;
+                let mut v = 0;
+                let mut b = 1;
+                while self.b & b != 0 {
+                    if rest & b == b {
+                        v = (v + self.calc(p | b)) % M;
+                    }
+                    b <<= 1;
+                }
+                v
+            };
+            self.dp[p] = Some(v);
+            v
+        }
     }
 }

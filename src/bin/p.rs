@@ -18,24 +18,26 @@ struct DP {
 
 impl DP {
     fn new(n: usize, xy: &Vec<(usize, usize)>) -> DP {
-        let mut xy = xy.clone();
-        let mut t = HashMap::new();
-        let mut c = vec![1];
-        while c.is_empty() == false {
-            for (x, y) in &xy {
-                if *x == c[0] {
-                    t.entry(*x).or_insert(Vec::new()).push(*y);
-                    c.push(*y);
-                } else if *y == c[0] {
-                    t.entry(*y).or_insert(Vec::new()).push(*x);
-                    c.push(*x);
-                } else {
-                    // do nothing
-                }
-            }
-            xy.retain(|(x, y)| *x != c[0] && *y != c[0]);
-            c.remove(0);
+        let mut g = HashMap::new();
+        for (x, y) in xy {
+            g.entry(*x).or_insert(Vec::new()).push(*y);
+            g.entry(*y).or_insert(Vec::new()).push(*x);
         }
+
+        let mut t = HashMap::new();
+        if let Some(c) = g.get_mut(&1) {
+            let mut p = vec![(1, t.entry(1).or_insert(c.clone()).clone())];
+            while p.is_empty() == false {
+                for i in 0..p[0].1.len() {
+                    if let Some(c) = g.get_mut(&p[0].1[i]) {
+                        c.retain(|ci| *ci != p[0].0);
+                        p.push((p[0].1[i], t.entry(p[0].1[i]).or_insert(c.clone()).clone()));
+                    }
+                }
+                p.remove(0);
+            }
+        }
+
         DP {
             dp: vec![None; n],
             t: t,

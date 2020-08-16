@@ -3,41 +3,44 @@ use proconio::{input, marker::Usize1};
 fn main() {
     input! {
         n: usize,
-        k: Usize1,
+        k: usize,
         p: [Usize1; n],
         c: [i64; n],
     }
 
-    let mut dp = DP::new(n, k);
-    let mut r = dp.calc(0, k, &p, &c);
+    let mut r = calc(&p, &c, k, p[0]);
     for i in 1..n {
-        r = r.max(dp.calc(i, k, &p, &c))
+        r = r.max(calc(&p, &c, k, p[i]));
     }
     println!("{}", r);
 }
 
-struct DP {
-    dp: Vec<Vec<Option<i64>>>,
-}
+fn calc(p: &Vec<usize>, c: &Vec<i64>, k: usize, i: usize) -> i64 {
+    let mut j = p[i];
+    let mut cum = (1, c[j]);
+    let mut v = cum.1;
 
-impl DP {
-        fn new(n: usize, k: usize) -> DP {
-        DP {
-            dp: vec![vec![None; k + 1]; n],
+    while cum.0 < k && j != i {
+        j = p[j];
+        cum.0 += 1;
+        cum.1 += c[j];
+        v = v.max(cum.1);
+    }
+
+    if cum.0 < k && cum.1 > 0 {
+        let l = k / cum.0;
+        if l > 1 {
+            cum.0 *= l - 1;
+            cum.1 *= l as i64 - 1;
+            v = v.max(cum.1);
+        }
+        while cum.0 < k {
+            j = p[j];
+            cum.0 += 1;
+            cum.1 += c[j];
+            v = v.max(cum.1);
         }
     }
-    fn calc(&mut self, i: usize, k: usize, p: &Vec<usize>, c: &Vec<i64>) -> i64 {
-        let v = if let Some(v) = self.dp[i][k] {
-            v
-        } else {
-            let v = c[p[i]];
-            if k > 0 {
-                v.max(v + self.calc(p[i], k - 1, p, c))
-            } else {
-                v
-            }
-        };
-        self.dp[i][k] = Some(v);
-        v
-    }
+
+    v
 }

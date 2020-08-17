@@ -10,35 +10,42 @@ fn main() {
 
     let b = make_board(&rcv, r, c);
 
-    let mut dp = vec![vec![0; c]; r];
-    for j in 0..c {
-        dp[0][j] = b[0][j];
-    }
-
-    for i in 1..r {
-        for j in (0..c).rev() {
-            let v = calc_max(&dp, &b, i - 1, j);
-            dp[i - 1][j] = v;
-            dp[i][j] = b[i][j] + v;
-        }
-    }
-
-    println!("{}", calc_max(&dp, &b, r - 1, c - 1));
-}
-
-fn calc_max(dp: &Vec<Vec<u64>>, b: &Vec<Vec<u64>>, i: usize, j: usize) -> u64 {
-    let mut v = dp[i][j];
-    if j >= 1 {
-        v = v.max(b[i][j] + dp[i][j - 1]);
-        if j >= 2 {
-            let mut m = b[i][j - 1];
-            for k in (0..=(j - 2)).rev() {
-                v = v.max(b[i][j] + m + dp[i][k]);
-                m = m.max(b[i][k]);
+    let mut dp = vec![vec![vec![None; 3 + 1]; c]; r];
+    dp[0][0][0] = Some(0);
+    for i in 0..r {
+        for j in 0..c {
+            for k in (0..3).rev() {
+                if let Some(v) = dp[i][j][k] {
+                    set_v(&mut dp, i, j, k + 1, v + b[i][j])
+                }
+            }
+            for k in 0..=3 {
+                if let Some(v) = dp[i][j][k] {
+                    if i + 1 < r {
+                        set_v(&mut dp, i + 1, j, 0, v)
+                    }
+                    if j + 1 < c {
+                        set_v(&mut dp, i, j + 1, k, v)
+                    }
+                }
             }
         }
     }
-    v
+
+    let mut ans = 0;
+    for k in 0..=3 {
+        if let Some(v) = dp[r - 1][c - 1][k] {
+            ans = ans.max(v);
+        }
+    }
+
+    println!("{}", ans);
+}
+
+fn set_v(dp: &mut Vec<Vec<Vec<Option<u64>>>>, i: usize, j: usize, k: usize, v: u64) {
+    let nv = &mut dp[i][j][k];
+    let v = if let Some(nv) = *nv { nv.max(v) } else { v };
+    *nv = Some(v);
 }
 
 fn make_board(rcv: &Vec<(usize, usize, u64)>, r: usize, c: usize) -> Vec<Vec<u64>> {

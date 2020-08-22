@@ -3,22 +3,28 @@ use std::collections::HashMap;
 fn main() {
     proconio::input! {
         n: usize,
-        sc: [(String, u64); n],
+        mut sc: [(String, u64); n],
     }
 
-    let rev: Vec<_> = sc
+    let mut rev = Vec::new();
+    let mut cost = u64::max_value();
+    let sc: Vec<_> = sc
         .iter()
-        .map(|(s, _)| s.chars().rev().collect::<String>())
+        .filter(|e| {
+            let r = e.0.chars().rev().collect::<String>();
+            let f = e.0 != r;
+            if f {
+                rev.push(r);
+            } else {
+                cost = cost.min(e.1);
+            }
+            f
+        })
         .collect();
 
-    let mut cost = u64::max_value();
-    for i in 0..n {
-        let mut solver = Solver::new(n, &sc, &rev);
-        cost = cost.min(if sc[i].0 == solver.rev[i] {
-            sc[i].1
-        } else {
-            solver.calc(sc[i].0.as_str(), sc[i].1, true)
-        });
+    let solver = Solver::new(&sc, &rev);
+    for e in &sc {
+        cost = cost.min(solver.clone().calc(e.0.as_str(), e.1, true));
     }
 
     if cost < u64::max_value() {
@@ -28,18 +34,19 @@ fn main() {
     }
 }
 
+#[derive(Clone)]
 struct Solver<'a> {
     done: HashMap<(&'a str, bool), u64>,
     n: usize,
-    sc: &'a Vec<(String, u64)>,
+    sc: &'a Vec<&'a (String, u64)>,
     rev: &'a Vec<String>,
 }
 
 impl<'a> Solver<'a> {
-    fn new(n: usize, sc: &'a Vec<(String, u64)>, rev: &'a Vec<String>) -> Solver<'a> {
+    fn new(sc: &'a Vec<&'a (String, u64)>, rev: &'a Vec<String>) -> Solver<'a> {
         Solver {
             done: HashMap::new(),
-            n: n,
+            n: sc.len(),
             sc: sc,
             rev: rev,
         }

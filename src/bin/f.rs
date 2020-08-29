@@ -1,86 +1,83 @@
 use proconio::{input, marker::Usize1};
-use std::collections::HashSet;
+
+fn chmax(a: &mut i32, b: i32) { *a = (*a).max(b); }
+fn rotate(x: &mut usize, y: &mut usize, z: &mut usize) {
+    let w = *x;
+    *x = *y;
+    *y = *z;
+    *z = w;
+}
+
+struct DP {
+    l12: Vec<Vec<i32>>,
+    l1_max: Vec<i32>,
+    l2_max: Vec<i32>,
+    max: i32,
+    n: usize,
+}
+
+impl DP {
+    fn new(n: usize) -> DP {
+        DP {
+            l12: vec![vec![i32::min_value(); n + 1]; n + 1],
+            l1_max: vec![i32::min_value(); n],
+            l2_max: vec![i32::min_value(); n],
+            max: i32::min_value(),
+            n: n,
+        }
+    }
+    fn set(&mut self, l1: usize, l2: usize, v: i32) {
+        if l2 != self.n {
+            chmax(&mut self.l12[l1][l2], v);
+            chmax(&mut self.l12[l2][l1], v);
+            chmax(&mut self.l1_max[l2], v);
+            chmax(&mut self.l2_max[l2], v);
+        }
+        chmax(&mut self.l1_max[l1], v);
+        chmax(&mut self.l2_max[l1], v);
+        chmax(&mut self.max, v);
+    }
+}
 
 fn main() {
     input! {
         n: usize,
         a: [Usize1; n * 3],
     }
-    let mut dp = vec![vec![vec![0; n]; n]; n + 1];
-    let mut q = HashSet::new();
-    q.insert((a[0], a[1]));
-    for i in 1..n {
-        let mut nq = HashSet::new();
-        for (a1, a2) in q {
-            let a3 = a[i * 3 - 1];
-            let a4 = a[i * 3];
-            let a5 = a[i * 3 + 1];
-            let a6 = a[i * 3 + 2];
-            let p = if a6 == a1 {
-                if        a6 == a2 { Some((a1, a2, a3, a4, a5))
-                } else if a6 == a3 { Some((a1, a3, a2, a4, a5))
-                } else if a6 == a4 { Some((a1, a4, a3, a2, a5))
-                } else if a6 == a5 { Some((a1, a5, a3, a4, a2))
-                } else { None
-                }
-            } else if a6 == a2 {
-                if        a6 == a3 { Some((a2, a3, a1, a4, a5))
-                } else if a6 == a4 { Some((a2, a4, a3, a1, a5))
-                } else if a6 == a5 { Some((a2, a5, a3, a4, a5))
-                } else { None
-                }
-            } else if a6 == a3 {
-                if        a6 == a4 { Some((a3, a4, a1, a2, a5))
-                } else if a6 == a5 { Some((a3, a5, a1, a4, a2))
-                } else { None
-                }
-            } else if a6 == a4 && a6 == a5 {
-                Some((a4, a5, a3, a1, a2))
-            } else {
-                None
-            };
 
-            if let Some(p) = p {
-                dp[i + 1][p.0][p.1] = dp[i + 1][p.0][p.1].max(dp[i][a1][a2] + if p.2 == p.3 && p.2 == p.4 { 2 } else { 1 });
-                nq.insert((p.0, p.1));
-            } else {
-                let p = if a1 == a2 && a1 == a3 { Some((a4, a5, a1, a2, a3))
-                } else if  a1 == a2 && a1 == a4 { Some((a3, a5, a1, a2, a4))
-                } else if  a1 == a2 && a1 == a5 { Some((a3, a4, a1, a2, a5))
-                } else if  a1 == a3 && a1 == a4 { Some((a2, a5, a1, a3, a4))
-                } else if  a1 == a3 && a1 == a5 { Some((a2, a4, a1, a3, a5))
-                } else if  a1 == a4 && a1 == a5 { Some((a2, a3, a1, a4, a5))
-                } else if  a2 == a3 && a2 == a4 { Some((a1, a5, a2, a3, a4))
-                } else if  a2 == a3 && a2 == a5 { Some((a1, a4, a2, a3, a5))
-                } else if  a2 == a4 && a2 == a5 { Some((a1, a3, a2, a4, a5))
-                } else if  a3 == a4 && a3 == a5 { Some((a1, a2, a3, a4, a5))
-                } else {   None
-                };
-                if let Some(p) = p {
-                    dp[i + 1][p.0][p.1] = dp[i + 1][p.0][p.1].max(dp[i][a1][a2] + 1);
-                    nq.insert((p.0, p.1));
-                } else {
-                    let (x, y) = (a1, a2); dp[i + 1][x][y] = dp[i + 1][x][y].max(dp[i][a1][a2]); nq.insert((x, y));
-                    let (x, y) = (a1, a3); dp[i + 1][x][y] = dp[i + 1][x][y].max(dp[i][a1][a2]); nq.insert((x, y));
-                    let (x, y) = (a1, a4); dp[i + 1][x][y] = dp[i + 1][x][y].max(dp[i][a1][a2]); nq.insert((x, y));
-                    let (x, y) = (a1, a5); dp[i + 1][x][y] = dp[i + 1][x][y].max(dp[i][a1][a2]); nq.insert((x, y));
-                    let (x, y) = (a2, a3); dp[i + 1][x][y] = dp[i + 1][x][y].max(dp[i][a1][a2]); nq.insert((x, y));
-                    let (x, y) = (a2, a4); dp[i + 1][x][y] = dp[i + 1][x][y].max(dp[i][a1][a2]); nq.insert((x, y));
-                    let (x, y) = (a2, a5); dp[i + 1][x][y] = dp[i + 1][x][y].max(dp[i][a1][a2]); nq.insert((x, y));
-                    let (x, y) = (a3, a4); dp[i + 1][x][y] = dp[i + 1][x][y].max(dp[i][a1][a2]); nq.insert((x, y));
-                    let (x, y) = (a3, a5); dp[i + 1][x][y] = dp[i + 1][x][y].max(dp[i][a1][a2]); nq.insert((x, y));
-                    let (x, y) = (a4, a5); dp[i + 1][x][y] = dp[i + 1][x][y].max(dp[i][a1][a2]); nq.insert((x, y));
+    let mut dp = DP::new(n);
+    dp.set(a[0], a[1], 0);
+    let mut mc = 0;
+    for i in 1..n {
+        let (mut x, mut y, mut z) = (a[i * 3 - 1], a[i * 3], a[i * 3 + 1]);
+        if x == y && x == z {
+            mc += 1;
+        } else {
+            let mut q = vec![];
+            for _ in 0..3 {
+                for l in 0..n {
+                    let mut v = dp.l1_max[l];
+                    if y == z {
+                        v = v.max(dp.l12[y][l] + 1);
+                    }
+                    q.push((x, l, v));
                 }
+                let mut v = dp.max;
+                if y == z {
+                    v = v.max(dp.l1_max[y] + 1);
+                }
+                q.push((x, n, v));
+
+                let v = dp.max.max(dp.l12[z][z] + 1);
+                q.push((x, y, v));
+                rotate(&mut x, &mut y, &mut z);
+            }
+            for (x, y, v) in q {
+                dp.set(x, y, v);
             }
         }
-        q = nq;
     }
-
-    let mut r = 0;
-    for qi in q {
-        r = r.max(dp[n][qi.0][qi.1]);
-    }
-
-    dbg!(&dp);
-    println!("{}", r);
+    let l = a[3 * n - 1];
+    let v = dp.max.max(dp.l12[l][l] + 1);
+    println!("{}", v + mc);
 }

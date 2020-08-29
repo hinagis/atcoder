@@ -1,9 +1,13 @@
 fn main() {
     proconio::input! {
-        n: usize,
+        d: u32,
+        t: u32,
+        s: u32,
     }
-    let r = n;
 
-    println!("Yes");
-    println!("{}", r);
+    if t * s >= d {
+        println!("Yes");
+    } else {
+        println!("No");
+    }
 }

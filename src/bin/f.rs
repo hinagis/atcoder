@@ -1,4 +1,12 @@
-use proconio::{input, marker::Usize1};
+use {
+    proconio::{input, marker::Usize1},
+    std::{
+        collections::{BTreeSet, BTreeMap},
+        ops::Bound::Included,
+    },
+};
+
+const M: usize = usize::max_value();
 
 fn main() {
     input! {
@@ -7,32 +15,48 @@ fn main() {
         ab: [(Usize1, Usize1); h],
     }
 
-    let mut dp = vec![i32::max_value(); w];
+    let mut es = BTreeSet::new();
+    let mut dc = BTreeMap::new();
     for j in 0..w {
-        dp[j] = 0;
+        es.insert((j, j));
     }
-    for i in 1..=h {
-        let mut v = if dp[0] < i32::max_value() && ab[i - 1].0 > 0  {
-            dp[0] + 1
-        } else {
-            i32::max_value()
-        };
-        dp[0] = v;
-        let mut min = v;
-        for j in 1..w {
-            if v < i32::max_value() {
-                v += 1;
+    dc.insert(0, w);
+
+    for i in 0..h {
+        let (a, b) = ab[i];
+        let mut rm = vec![];
+        let mut add = None;
+        for &(e, s) in es.range((Included(&(a, 0)), Included(&(b, w)))).rev() {
+            rm.push((e, s));
+            if add.is_none() {
+                let e = if b == w - 1 { M } else { b + 1 };
+                add = Some((e, s));
             }
-            if dp[j] < i32::max_value() && j < ab[i - 1].0 || j > ab[i - 1].1 {
-                v = v.min(dp[j] + 1);
-            }
-            dp[j] = v;
-            min = min.min(v);
         }
-        println!("{}", if min == i32::max_value() {
-            -1
+
+        for (e, s) in rm {
+            es.remove(&(e, s));
+
+            let d = e - s;
+            if let Some(v) = dc.get_mut(&d) {
+                if *v <= 1 {
+                    dc.remove(&d);
+                } else {
+                    *v -= 1;
+                }
+            }
+        }
+
+        if let Some((e, s)) = add {
+            es.insert((e, s));
+            *dc.entry(e - s).or_insert(0) += 1;
+        }
+
+        let d = if let Some(f) = dc.iter().next() { *f.0 } else { M };
+        if d >= w {
+            println!("-1");
         } else {
-            min
-        });
+            println!("{}", d + i + 1);
+        }
     }
 }

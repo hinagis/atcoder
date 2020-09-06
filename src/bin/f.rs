@@ -24,14 +24,17 @@ fn main() {
 
     for i in 0..h {
         let (a, b) = ab[i];
+        let rng = es.range((Included(&(a, 0)), Included(&(b, w))));
+        let add = if let Some(&(_, s)) = rng.clone().last() {
+            let e = if b == w - 1 { M } else { b + 1 };
+            Some((e, s))
+        } else {
+            None
+        };
+
         let mut rm = vec![];
-        let mut add = None;
-        for &(e, s) in es.range((Included(&(a, 0)), Included(&(b, w)))).rev() {
+        for &(e, s) in rng {
             rm.push((e, s));
-            if add.is_none() {
-                let e = if b == w - 1 { M } else { b + 1 };
-                add = Some((e, s));
-            }
         }
 
         for (e, s) in rm {

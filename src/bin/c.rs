@@ -1,14 +1,13 @@
-use proconio::input;
+use proconio::{input, fastout};
 
+#[fastout]
 fn main() {
     input! { t: usize }
 
-    let mut ans = vec![];
     for _ in 0..t {
         input! { n: u64, m: u64, a: u64, b: u64 }
-        ans.push(floor_sum(n, m, a, b).to_string());
+        println!("{}", floor_sum(n, m, a, b));
     }
-    println!("{}", ans.join("\n"));
 }
 
 fn floor_sum(n: u64, m: u64, mut a: u64, mut b: u64) -> u64 {

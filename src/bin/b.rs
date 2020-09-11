@@ -1,5 +1,6 @@
-use proconio::input;
+use proconio::{input, fastout};
 
+#[fastout]
 fn main() {
     input! {
         n: usize,
@@ -7,7 +8,6 @@ fn main() {
         a: [usize; n],
     }
 
-    let mut ans = vec![];
     let mut t = FenwickTree::from_vec(a);
     for _ in 0..q {
         input! {
@@ -18,10 +18,9 @@ fn main() {
         if f == 0 {
             t.add(l, r);
         } else {
-            ans.push(t.cum(l, r).to_string());
+            println!("{}", t.cum(l, r));
         }
     }
-    println!("{}", ans.join("\n"));
 }
 
 struct FenwickTree<T> {

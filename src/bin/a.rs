@@ -1,9 +1,6 @@
 fn main() {
     proconio::input! {
-        n: usize,
+        x: usize,
     }
-    let r = n;
-
-    println!("Yes");
-    println!("{}", r);
+    println!("{}", if x == 1 { 0 } else { 1 });
 }

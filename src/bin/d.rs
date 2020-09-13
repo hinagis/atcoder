@@ -33,7 +33,7 @@ fn main() {
         }
     }
 
-    println!("{}", g.calc(start, term));
+    println!("{}", g.calc(start, term, usize::max_value()));
 
     for &e in &g.edges[start] {
         if e.cap == 0 {
@@ -61,20 +61,23 @@ fn main() {
     );
 }
 
+use num::{Integer, zero};
+use std::ops::{AddAssign, SubAssign};
+
 #[derive(Copy, Clone)]
-struct Edge {
+struct Edge<T> {
     to: usize,
     rev: usize,
-    cap: u64,
+    cap: T,
 }
 
-struct Dinic {
-    edges: Vec<Vec<Edge>>,
+struct Dinic<T> {
+    edges: Vec<Vec<Edge<T>>>,
     d: Vec<u64>,
     it: Vec<usize>,
 }
 
-impl Dinic {
+impl<T: Copy + Clone + Integer + AddAssign + SubAssign> Dinic<T> {
     fn new(n: usize) -> Self {
         Self {
             edges: vec![vec![]; n],
@@ -83,18 +86,18 @@ impl Dinic {
         }
     }
 
-    fn add_edge(&mut self, s: usize, t: usize, cap: u64) {
+    fn add_edge(&mut self, s: usize, t: usize, cap: T) {
         let rev = self.edges[t].len();
         self.edges[s].push(Edge { to: t, rev, cap });
         let rev = self.edges[s].len() - 1;
-        self.edges[t].push(Edge { to: s, rev, cap: 0 });
+        self.edges[t].push(Edge { to: s, rev, cap: zero() });
     }
 
-    fn calc(&mut self, s: usize, t: usize) -> u64 {
-        let mut flow = 0;
+    fn calc(&mut self, s: usize, t: usize, limit: T) -> T {
+        let mut flow = zero();
         while self.calc_distance(s, t) {
             self.it = vec![0; self.len()];
-            while let Some(f) = self.move_flow(s, t, std::u64::MAX) {
+            while let Some(f) = self.move_flow(s, t, limit) {
                 flow += f;
             }
         }
@@ -108,7 +111,7 @@ impl Dinic {
         q.push_back(s);
         while let Some(from) = q.pop_front() {
             for &e in &self.edges[from] {
-                if e.cap > 0 && self.d[e.to] == 0 {
+                if e.cap > zero() && self.d[e.to] == 0 {
                     self.d[e.to] = self.d[from] + 1;
                     q.push_back(e.to);
                 }
@@ -117,14 +120,14 @@ impl Dinic {
         self.d[t] != 0
     }
 
-    fn move_flow(&mut self, s: usize, t: usize, flow: u64) -> Option<u64> {
+    fn move_flow(&mut self, s: usize, t: usize, flow: T) -> Option<T> {
         if s == t {
             Some(flow)
         } else {
             let n = self.edges[s].len();
             for i in self.it[s]..n {
                 let e = self.edges[s][i];
-                if e.cap > 0 && self.d[s] < self.d[e.to] {
+                if e.cap > num::zero() && self.d[s] < self.d[e.to] {
                     if let Some(flow) = self.move_flow(e.to, t, e.cap.min(flow)) {
                         self.it[s] = i;
                         self.edges[s][i].cap -= flow;

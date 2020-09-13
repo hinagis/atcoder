@@ -104,13 +104,13 @@ impl Dinic {
     fn calc_distance(&mut self, s: usize, t: usize) -> bool {
         self.d = vec![0; self.len()];
         self.d[s] = 1;
-        let mut q = vec![];
-        q.push(s);
-        while let Some(from) = q.pop() {
+        let mut q = std::collections::VecDeque::new();
+        q.push_back(s);
+        while let Some(from) = q.pop_front() {
             for &e in &self.edges[from] {
                 if e.cap > 0 && self.d[e.to] == 0 {
                     self.d[e.to] = self.d[from] + 1;
-                    q.push(e.to);
+                    q.push_back(e.to);
                 }
             }
         }

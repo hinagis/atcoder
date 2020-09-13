@@ -61,7 +61,7 @@ fn main() {
     );
 }
 
-use num::{Integer, zero};
+use num::{Integer, zero, one};
 use std::ops::{AddAssign, SubAssign};
 
 #[derive(Copy, Clone)]
@@ -73,7 +73,7 @@ struct Edge<T> {
 
 struct Dinic<T> {
     edges: Vec<Vec<Edge<T>>>,
-    d: Vec<u64>,
+    d: Vec<T>,
     it: Vec<usize>,
 }
 
@@ -81,7 +81,7 @@ impl<T: Copy + Clone + Integer + AddAssign + SubAssign> Dinic<T> {
     fn new(n: usize) -> Self {
         Self {
             edges: vec![vec![]; n],
-            d: vec![0; n],
+            d: vec![zero(); n],
             it: vec![0; n],
         }
     }
@@ -96,7 +96,7 @@ impl<T: Copy + Clone + Integer + AddAssign + SubAssign> Dinic<T> {
     fn calc(&mut self, s: usize, t: usize, limit: T) -> T {
         let mut flow = zero();
         while self.calc_distance(s, t) {
-            self.it = vec![0; self.len()];
+            self.it = vec![0; self.it.len()];
             while let Some(f) = self.move_flow(s, t, limit) {
                 flow += f;
             }
@@ -105,19 +105,19 @@ impl<T: Copy + Clone + Integer + AddAssign + SubAssign> Dinic<T> {
     }
 
     fn calc_distance(&mut self, s: usize, t: usize) -> bool {
-        self.d = vec![0; self.len()];
-        self.d[s] = 1;
+        self.d = vec![zero(); self.d.len()];
+        self.d[s] = one();
         let mut q = std::collections::VecDeque::new();
         q.push_back(s);
         while let Some(from) = q.pop_front() {
             for &e in &self.edges[from] {
-                if e.cap > zero() && self.d[e.to] == 0 {
-                    self.d[e.to] = self.d[from] + 1;
+                if e.cap > zero() && self.d[e.to] == zero() {
+                    self.d[e.to] = self.d[from] + one();
                     q.push_back(e.to);
                 }
             }
         }
-        self.d[t] != 0
+        self.d[t] != zero()
     }
 
     fn move_flow(&mut self, s: usize, t: usize, flow: T) -> Option<T> {
@@ -139,9 +139,5 @@ impl<T: Copy + Clone + Integer + AddAssign + SubAssign> Dinic<T> {
             self.it[s] = n;
             None
         }
-    }
-
-    fn len(&self) -> usize {
-        self.edges.len()
     }
 }

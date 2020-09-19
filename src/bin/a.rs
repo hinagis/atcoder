@@ -1,9 +1,7 @@
 fn main() {
     proconio::input! {
-        n: usize,
+        s: String,
     }
-    let r = n;
 
-    println!("Yes");
-    println!("{}", r);
+    println!("{}", if (&s).ends_with("s") { s + "es" } else { s + "s" });
 }

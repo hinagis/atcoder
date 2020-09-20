@@ -5,20 +5,27 @@ fn main() {
         m: u64,
     }
 
-    let mut dp = vec![false; m as usize];
-    dp[x as usize] = true;
+    let mut dp = vec![None; m as usize];
     let mut r = 0;
     let mut i = 0;
     while i < n {
-        r += x;
-        i += 1;
-        x = x * x % m;
-        if dp[x as usize] {
-            let l = n / i;
-            if l > 1 {
-                r = r * l % m;
-                i = l * i;
+        if let Some((c, v)) = dp[x as usize] {
+            let w = i - c;
+            let l = n / w - 3;
+            if l > 3 {
+                r += (r - v) * l;
+                i += w * l;
             }
+            while i < n {
+                r += x;
+                i += 1;
+                x = x * x % m;
+            }
+        } else {
+            dp[x as usize] = Some((i, r));
+            r += x;
+            i += 1;
+            x = x * x % m;
         }
     }
     println!("{}", r);

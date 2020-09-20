@@ -1,33 +1,24 @@
-use proconio::input;
-
 const M: usize = 998244353;
 
 fn main() {
-    input! {
+    proconio::input! {
         n: usize,
         k: usize,
+        lr: [(usize, usize); k],
     }
 
-    let mut rng = vec![];
-    for _ in 0..k {
-        input!{ l: usize, r: usize };
-        for j in l..=r {
-            rng.push(j);
-        }
-    }
-    rng.sort();
-
-    let mut dp = vec![0; n + 1];
-    dp[1] = 1;
-
-    for i in 1..n {
-        for j in rng.iter() {
-            if i + j > n {
-                break;
-            } else {
-                dp[i + j] = (dp[i + j] + dp[i]) % M;
+    let mut dp = vec![0; n];
+    dp[0] = 1;
+    dp[1] = M - 1;
+    for i in 0..(n - 1) {
+        if dp[i] > 0 {
+            for &(l, r) in &lr {
+                let (l, r) = (i + l, i + r + 1);
+                if l < n { dp[l] = (dp[l] + dp[i]) % M }
+                if r < n { dp[r] = (M + dp[r] - dp[i]) % M }
             }
+            dp[i + 1] = (dp[i + 1] + dp[i]) % M;
         }
     }
-    println!("{}", dp[n]);
+    println!("{}", dp[n - 1]);
 }

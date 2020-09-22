@@ -17,13 +17,22 @@ fn main() {
             r -= h - 2;
             wh.push((x, h - 2));
         } else {
-            for i in 0..wh.len() {
-                if x > wh[i].0 {
-                    r -= wh[i].1;
-                    break;
-                }
-            }
+            r -= wh[binsearch(x, wh)].1;
         }
     }
     println!("{}", r);
+}
+
+fn binsearch(x: usize, wh: &Vec<(usize, usize)>) -> usize {
+    let mut l = 0;
+    let mut r = wh.len();
+    while l < r {
+        let m = (l + r) / 2;
+        if x < wh[m].0 {
+            l = m + 1;
+        } else {
+            r = m;
+        }
+    }
+    l
 }

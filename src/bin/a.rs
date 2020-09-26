@@ -1,9 +1,9 @@
 fn main() {
     proconio::input! {
-        n: usize,
+        k: usize,
     }
-    let r = n;
-
-    println!("Yes");
-    println!("{}", r);
+    for _ in 0..k {
+        print!("ACL");
+    }
+    println!("");
 }

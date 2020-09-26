@@ -1,9 +1,7 @@
 fn main() {
     proconio::input! {
-        n: usize,
+        mut abc: [usize; 3],
     }
-    let r = n;
-
-    println!("Yes");
-    println!("{}", r);
+    abc.sort();
+    println!("{}", abc[1]);
 }

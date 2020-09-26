@@ -1,4 +1,5 @@
 use proconio::{input, fastout};
+use std::collections::BTreeSet;
 
 #[fastout]
 fn main() {
@@ -8,28 +9,10 @@ fn main() {
         mut a: [usize; n],
         mut b: [usize; m],
     }
-    a.sort();
-    b.sort();
+    let a: BTreeSet<_> = a.into_iter().collect();
+    let b: BTreeSet<_> = b.into_iter().collect();
 
-    let mut i = 0;
-    let mut j = 0;
-    while i < n && j < m {
-        if a[i] == b[j] {
-            println!("{}", a[i]);
-            i = skip(&a, i, n);
-            j = skip(&b, j, j);
-        } else if a[i] < b[j] {
-            i = skip(&a, i, n);
-        } else {
-            j = skip(&b, j, m);
-        }
+    for c in a.intersection(&b) {
+        println!("{}", c);
     }
-}
-
-fn skip(a: &Vec<usize>, mut i: usize, n: usize) -> usize {
-    let t = a[i];
-    while i < n && a[i] == t {
-        i += 1;
-    }
-    i
 }

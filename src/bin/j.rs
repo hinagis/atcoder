@@ -30,17 +30,7 @@ fn main() {
                 } else if st.get(x, n, None) < v {
                     n + 1
                 } else {
-                    let mut l = x + 1;
-                    let mut r = n;
-                    while r - l > 1 {
-                        let mid = (l + r) / 2;
-                        if st.get(x, mid, None) < v {
-                            l = mid;
-                        } else {
-                            r = mid;
-                        }
-                    }
-                    r
+                    st.right(x + 1, n, v)
                 };
                 println!("{}", r);
             },
@@ -49,26 +39,28 @@ fn main() {
     }
 }
 
-struct SegTree {
-    tree: Vec<u64>,
+use num::{Integer, zero};
+
+struct SegTree<T> {
+    tree: Vec<T>,
     leaf_size: usize,
-    op: fn(u64, u64) -> u64,
+    op: fn(T, T) -> T,
 }
 
-impl SegTree {
-    fn new(n: usize, op: fn(u64, u64) -> u64) -> Self {
+impl<T: Copy + Clone + Integer> SegTree<T> {
+    fn new(n: usize, op: fn(T, T) -> T) -> Self {
         let mut ls = 1;
         while ls < n {
             ls <<= 1;
         }
         Self {
-            tree: vec![0; 2 * ls - 1],
+            tree: vec![zero(); 2 * ls - 1],
             leaf_size: ls,
             op,
         }
     }
 
-    fn set(&mut self, mut i: usize, v: u64) {
+    fn set(&mut self, mut i: usize, v: T) {
         i += self.leaf_size - 1;
         self.tree[i] = v;
         while i > 0 {
@@ -77,10 +69,10 @@ impl SegTree {
         }
     }
 
-    fn get(&self, s: usize, e: usize, rng: Option<(usize, usize, usize)>) -> u64 {
+    fn get(&self, s: usize, e: usize, rng: Option<(usize, usize, usize)>) -> T {
         let (i, l, r) = if let Some(rng) = rng { rng } else { (0, 0, self.leaf_size) };
         if l >= e || r <= s {
-            0
+            zero()
         } else if l >= s && r <= e {
             self.tree[i]
         } else {
@@ -89,5 +81,18 @@ impl SegTree {
             let vr = self.get(s, e, Some((2 * i + 2, m, r)));
             (self.op)(vl, vr)
         }
+    }
+
+    #[allow(unused)]
+    fn right(&self, mut l: usize, mut r: usize, v: T) -> usize {
+        while r - l > 1 {
+            let m = (l + r) / 2;
+            if self.get(l, m, None) < v {
+                l = m;
+            } else {
+                r = m;
+            }
+        }
+        r
     }
 }

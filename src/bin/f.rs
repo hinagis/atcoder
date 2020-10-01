@@ -6,7 +6,7 @@ fn main() {
         n: usize,
         m: usize,
         a: [usize; n],
-        b: [usize; m]
+        b: [usize; m],
     }
 
     let mut l = 0;
@@ -16,24 +16,21 @@ fn main() {
         p *= 2;
     }
 
+    // 565042129 is Mint(1) / pow(MInt(2), 20)
     let z = pow(MInt(565042129), pow(2, 20 - l));
 
-    let a = {
-        let mut ta = Vec::with_capacity(p);
-        for i in 0..n { ta.push(MInt(a[i])) }
-        for _ in n..p { ta.push(MInt(0)) }
-        ntt(&ta, 0, 1, z)
+    let make = |d: Vec<usize>, n| {
+        let mut v = Vec::with_capacity(p);
+        for i in 0..n { v.push(MInt(d[i])) }
+        for _ in n..p { v.push(MInt(0)) }
+        ntt(&v, 0, 1, z)
     };
-    let b = {
-        let mut tb = Vec::with_capacity(p);
-        for i in 0..m { tb.push(MInt(b[i])) }
-        for _ in m..p { tb.push(MInt(0)) }
-        ntt(&tb, 0, 1, z)
-    };
+    let a = make(a, n);
+    let b = make(b, m);
     let c = {
-        let mut tc = Vec::with_capacity(p);
-        for i in 0..p { tc.push(a[i] * b[i]) }
-        ntt(&tc, 0, 1, MInt(1) / z)
+        let mut v = Vec::with_capacity(p);
+        for i in 0..p { v.push(a[i] * b[i]) }
+        ntt(&v, 0, 1, MInt(1) / z)
     };
 
     print!("{}", (c[0] / MInt(p)).0);
@@ -44,7 +41,7 @@ fn main() {
 }
 
 use num::{pow, One};
-use std::ops::{Add, Div, Mul, Sub};
+use std::ops::{Add, Sub, Mul, Div};
 
 const M: usize = 998244353;
 
@@ -81,7 +78,7 @@ impl Mul for MInt {
 impl Div for MInt {
     type Output = Self;
     fn div(self, v: Self) -> Self {
-        assert!(v.0 > 0);
+        assert!(v.0 != 0);
         let v = pow(v, M - 2);
         return self * v;
     }

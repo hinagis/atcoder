@@ -87,9 +87,9 @@ impl EdgeToIDs {
         self.stack.push(s);
         for i in self.csr.start[s]..self.csr.start[s + 1] {
             let t = self.csr.list[i];
-            if let Some(f) = self.first_index[t] {
+            if self.first_index[t] != None {
                 if self.ids[t] == None {
-                    self.min_index[s] = self.min_index[s].min(f);
+                    self.min_index[s] = self.min_index[s].min(self.min_index[t]);
                 }
             } else {
                 self.dfs(t);

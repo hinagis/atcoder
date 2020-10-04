@@ -1,9 +1,10 @@
 fn main() {
     proconio::input! {
-        n: usize,
+        a: usize,
+        b: usize,
+        c: usize,
+        s: String,
     }
-    let r = n;
 
-    println!("Yes");
-    println!("{}", r);
+    println!("{} {}", a + b + c, s);
 }

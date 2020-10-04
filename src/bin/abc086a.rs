@@ -1,9 +1,8 @@
 fn main() {
     proconio::input! {
-        n: usize,
+        a: usize,
+        b: usize,
     }
-    let r = n;
 
-    println!("Yes");
-    println!("{}", r);
+    println!("{}", if a * b % 2 == 0 {"Even"} else {"Odd"});
 }

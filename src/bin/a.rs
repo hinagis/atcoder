@@ -1,9 +1,8 @@
 fn main() {
     proconio::input! {
-        n: usize,
+        s: char,
+        t: char,
     }
-    let r = n;
 
-    println!("Yes");
-    println!("{}", r);
+    println!("{}", if s == 'Y' {t.to_ascii_uppercase()} else {t});
 }

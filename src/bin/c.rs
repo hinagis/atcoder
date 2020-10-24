@@ -1,8 +1,10 @@
 fn main() {
-    println!("5");
-    println!("abcde");
-    println!("fghij");
-    println!("klmno");
-    println!("pqrst");
-    println!("uvwxy");
+    println!("7");
+    println!("aabbccd");
+    println!("deeffgg");
+    println!("hhiijjk");
+    println!("kllmmnn");
+    println!("ooppqqr");
+    println!("rssttuu");
+    println!("vvwwxxy");
 }

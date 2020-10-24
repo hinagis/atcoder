@@ -1,9 +1,8 @@
 fn main() {
-    proconio::input! {
-        n: usize,
-    }
-    let r = n;
-
-    println!("Yes");
-    println!("{}", r);
+    println!("5");
+    println!("abcde");
+    println!("fghij");
+    println!("klmno");
+    println!("pqrst");
+    println!("uvwxy");
 }

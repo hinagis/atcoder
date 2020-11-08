@@ -1,9 +1,8 @@
 fn main() {
     proconio::input! {
-        n: usize,
+        a: usize,
+        b: usize,
     }
-    let r = n;
-
-    println!("Yes");
-    println!("{}", r);
+    let c = 2 * a + 100;
+    println!("{}", if c > b {c - b} else {0});
 }

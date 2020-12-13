@@ -1,9 +1,11 @@
 fn main() {
     proconio::input! {
-        n: usize,
+        a: [u32; 4],
     }
-    let r = n;
+    let mut r = a[0];
+    for i in 1..4 {
+        r = r.min(a[i]);
+    }
 
-    println!("Yes");
     println!("{}", r);
 }

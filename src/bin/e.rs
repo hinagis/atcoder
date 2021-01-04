@@ -1,40 +1,61 @@
 use proconio::{input, marker::Usize1};
 
+const R: usize = 0;
+
 fn main() {
     input! {
         n: usize,
         ab: [(Usize1, Usize1); n - 1],
-        q: usize,
-        tex: [(u8, Usize1, u64); q]
     }
-    let mut g = vec![Vec::new(); n];
+
+    let mut g = vec![vec![]; n];
     for &(a, b) in &ab {
         g[a].push(b);
         g[b].push(a);
     }
 
-    let mut c = vec![0; n];
-    for &(t, e, x) in &tex {
-        let (a, b) = if t == 1 {ab[e]} else {(ab[e].1, ab[e].0)};
-        let mut done = std::collections::HashSet::new();
-        done.insert(a);
-        let mut next = vec![a];
-        c[a] += x;
-        while !next.is_empty() {
-            let now = next;
-            next = vec![];
-            for i in now {
-                for &j in &g[i] {
-                    if j != b && !done.contains(&j) {
-                        c[j] += x;
-                        done.insert(j);
-                        next.push(j);
-                    }
-                }
+    let mut d = vec![None; n];
+    d[R] = Some(0);
+    let mut q = vec![R];
+    while let Some(i) = q.pop() {
+        for &j in &g[i] {
+            if d[j] == None {
+                d[j] = Some(d[i].unwrap() + 1);
+                q.push(j);
             }
         }
     }
-    for c in c {
-        println!("{}", c);
+
+    let mut c = vec![0; n];
+
+    input! {q: usize}
+    for _ in 0..q {
+        input! {
+            t: u8,
+            e: Usize1,
+            x: i64
+        }
+
+        let (a, b) = ab[e];
+        let (b, t) = if d[a] < d[b] {(b, t)} else {(a, t ^ 3)};
+        if t == 1 {
+            c[0] += x;
+            c[b] -= x;
+        } else {
+            c[b] += x;
+        }
     }
+
+    let mut q = vec![R];
+    while let Some(i) = q.pop() {
+        for &j in &g[i] {
+            if d[i] < d[j] {
+                c[j] += c[i];
+                q.push(j);
+            }
+        }
+    }
+
+    let c = c.iter().map(|&e| e.to_string()).collect::<Vec<_>>().join("\n");
+    println!("{}", c);
 }

@@ -1,9 +1,8 @@
 fn main() {
     proconio::input! {
-        n: usize,
+        x: i32,
+        y: i32,
     }
-    let r = n;
 
-    println!("Yes");
-    println!("{}", r);
+    println!("{}", if (x - y).abs() < 3 {"Yes"} else {"No"});
 }

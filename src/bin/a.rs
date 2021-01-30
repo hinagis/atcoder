@@ -1,9 +1,15 @@
 fn main() {
     proconio::input! {
-        n: usize,
+        a: usize,
+        b: usize,
+        c: usize,
     }
-    let r = n;
 
-    println!("Yes");
-    println!("{}", r);
+    const T: &str = &"Takahashi";
+    const A: &str = &"Aoki";
+    println!("{}", if c == 0 {
+        if a > b {T} else {A}
+    } else {
+        if b > a {A} else {T}
+    });
 }

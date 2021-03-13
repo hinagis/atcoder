@@ -1,9 +1,16 @@
 fn main() {
     proconio::input! {
-        n: usize,
+        a: usize,
+        b: usize,
+        w: usize,
     }
-    let r = n;
+    let w = w * 1000;
+    let wa = w / a;
+    let wb = w / b;
 
-    println!("Yes");
-    println!("{}", r);
+    if a * wa != w && b * wb != w && wa == wb {
+        println!("UNSATISFIABLE");
+    } else {
+        println!("{} {}", if wb * b == w {wb} else {wb + 1}, wa);
+    }
 }

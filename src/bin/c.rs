@@ -1,9 +1,13 @@
 fn main() {
-    proconio::input! {
-        n: usize,
-    }
-    let r = n;
+    proconio::input! {n: u64}
 
-    println!("Yes");
-    println!("{}", r);
+    let mut s = 1;
+    let mut t = 10;
+    while s * t + s <= n {
+        s += 1;
+        if s >= t {
+            t *= 10;
+        }
+    }
+    println!("{}", s - 1);
 }

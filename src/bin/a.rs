@@ -1,9 +1,10 @@
 fn main() {
     proconio::input! {
-        n: usize,
+        _: i32,
+        b: i32,
+        c: i32,
+        _: i32,
     }
-    let r = n;
 
-    println!("Yes");
-    println!("{}", r);
+    println!("{}", b - c);
 }

@@ -1,9 +1,6 @@
-fn main() {
-    proconio::input! {
-        n: usize,
-    }
-    let r = n;
+use proconio::{input, marker::Chars};
 
-    println!("Yes");
-    println!("{}", r);
+fn main() {
+    input! {s: Chars}
+    println!("{}{}{}", s[1], s[2], s[0]);
 }

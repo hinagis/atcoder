@@ -1,9 +1,16 @@
 fn main() {
     proconio::input! {
-        n: usize,
+        r: f64,
+        x: f64,
+        y: f64,
     }
-    let r = n;
-
-    println!("Yes");
-    println!("{}", r);
+    let g = (x * x + y * y).sqrt();
+    println!("{}", if g == r {
+            1
+        } else if g <= 2f64 * r {
+            2
+        } else {
+            (g / r).ceil() as u64
+        }
+    );
 }

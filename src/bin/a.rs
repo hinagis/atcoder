@@ -1,9 +1,9 @@
 fn main() {
     proconio::input! {
-        n: usize,
+        a: usize,
+        b: usize,
+        c: usize,
     }
-    let r = n;
 
-    println!("Yes");
-    println!("{}", r);
+    println!("{}", if a*a + b*b < c*c {"Yes"} else {"No"});
 }

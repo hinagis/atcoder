@@ -1,9 +1,4 @@
 fn main() {
-    proconio::input! {
-        n: usize,
-    }
-    let r = n;
-
-    println!("Yes");
-    println!("{}", r);
+    proconio::input! {s: String}
+    println!("{}", s.matches("ZONe").collect::<Vec<&str>>().len());
 }

@@ -6,38 +6,20 @@ fn main() {
         w: usize,
         a: [Chars; h]
     }
-    let v = calc(&a, &h, &w, 0, 0, 0, vec![0, 0]);
-    println!("{}", if v[0] == v[1] {"Draw"} else if v[0] > v[1] {"Takahashi"} else {"Aoki"});
-}
-
-fn calc(a: &Vec<Vec<char>>, h: &usize, w: &usize, i: usize, j: usize, p: usize, v: Vec<i64>) -> Vec<i64> {
-    if i >= h - 1 && j >= w - 1 {
-        v
-    } else {
-        if i < h - 1 {
-            let mut ri = v.clone();
-            let i = i + 1;
-            ri[p] += if a[i][j] == '+' {1} else {-1};
-            ri = calc(a, h, w, i, j, p ^ 1, ri);
-            if ri[p] > ri[p ^ 1] || j >= w - 1 {
-                ri
-            } else {
-                let mut rj = v.clone();
-                let i = i - 1;
-                let j = j + 1;
-                rj[p] += if a[i][j] == '+' {1} else {-1};
-                rj = calc(a, h, w, i, j, p ^ 1, rj);
-                if rj[p] > rj[p ^ 1] || ri[p] != ri[p ^ 1] {
-                    rj
-                } else {
-                    ri
-                }
-            }
-        } else {
-            let mut rj = v.clone();
-            let j = j + 1;
-            rj[p] += if a[i][j] == '+' {1} else {-1};
-            calc(a, h, w, i, j, p ^ 1, rj)
+    let mut v = vec![vec![0; w]; h];
+    for i in (0..h - 1).rev() {
+        v[i][w - 1] = v[i + 1][w - 1] + if (i + w - 1) % 2 == 0 {1} else {-1} * if a[i + 1][w - 1] == '+' {1} else {-1}
+    }
+    for j in (0..w - 1).rev() {
+        v[h - 1][j] = v[h - 1][j + 1] + if (h - 1 + j) % 2 == 0 {1} else {-1} * if a[h - 1][j + 1] == '+' {1} else {-1}
+    }
+    for i in (0..h - 1).rev() {
+        for j in (0..w - 1).rev() {
+            let p = if (i + j) % 2 == 0 {1} else {-1};
+            let vi = v[i + 1][j] + p * if a[i + 1][j] == '+' {1} else {-1};
+            let vj = v[i][j + 1] + p * if a[i][j + 1] == '+' {1} else {-1};
+            v[i][j] = if (i + j) % 2 == 0 {vi.max(vj)} else {vi.min(vj)}
         }
     }
+    println!("{}", if v[0][0] == 0 {"Draw"} else if v[0][0] > 0 {"Takahashi"} else {"Aoki"});
 }

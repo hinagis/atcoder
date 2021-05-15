@@ -1,9 +1,17 @@
 fn main() {
-    proconio::input! {
-        n: usize,
-    }
-    let r = n;
+    proconio::input! {a: [i32; 3]}
 
-    println!("Yes");
-    println!("{}", r);
+    println!("{}",
+        if a[2] - a[1] == a[1] - a[0] 
+        || a[2] - a[0] == a[0] - a[1]
+        || a[1] - a[0] == a[0] - a[2]
+        || a[1] - a[2] == a[2] - a[0]
+        || a[0] - a[2] == a[2] - a[1]
+        || a[0] - a[1] == a[1] - a[2]
+        {
+            "Yes"
+        } else {
+            "No"
+        }
+    );
 }

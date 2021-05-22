@@ -9,20 +9,26 @@ fn main() {
     }
 
     let mut l = 0;
-    a -= 1;
-    let mut v = a + b;
-    for _ in 0..(a + b) {
-        let c = comb(v, a);
+    while a > 0 && b > 0 {
+        let c = comb(a - 1 + b, a - 1);
         if k <= l + c {
             print!("{}", 'a');
             a -= 1;
         } else {
             print!("{}", 'b');
+            b -= 1;
             l += c;
         }
-        v -= 1;
     }
-    println!("{}", if a == 0 {'a'} else {'b'});
+    while a > 0 {
+        print!("{}", 'a');
+        a -= 1;
+    }
+    while b > 0 {
+        print!("{}", 'b');
+        b -= 1;
+    }
+    println!("");
 }
 
 fn comb(n: i64, r: i64) -> i64 {

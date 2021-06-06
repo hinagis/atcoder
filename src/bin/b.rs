@@ -1,9 +1,8 @@
 fn main() {
     proconio::input! {
         n: usize,
+        a: [usize; n]
     }
-    let r = n;
 
-    println!("Yes");
-    println!("{}", r);
+    println!("{}", a.iter().fold(0, |s, &a| s + a.saturating_sub(10)));
 }

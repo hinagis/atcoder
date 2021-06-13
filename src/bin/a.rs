@@ -1,9 +1,8 @@
 fn main() {
     proconio::input! {
-        n: usize,
+        a: f64,
+        b: f64,
     }
-    let r = n;
 
-    println!("Yes");
-    println!("{}", r);
+    println!("{}", a * b / 100f64);
 }

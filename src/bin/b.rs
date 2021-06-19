@@ -1,9 +1,11 @@
 fn main() {
     proconio::input! {
-        n: usize,
+        n: u32,
     }
-    let r = n;
+    let mut d = 1;
+    while d * (1 + d) < 2 * n {
+        d += 1;
+    }
 
-    println!("Yes");
-    println!("{}", r);
+    println!("{}", d);
 }

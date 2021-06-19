@@ -1,9 +1,21 @@
 fn main() {
     proconio::input! {
         n: usize,
+        mut a: [u32; n]
     }
-    let r = n;
+    a.sort();
 
-    println!("Yes");
-    println!("{}", r);
+    let mut c = 0u64;
+    let (mut i, mut j) = (0, 0);
+    'outer: while i < n {
+        while a[i] == a[j] {
+            j += 1;
+            if j >= n {
+                break 'outer;
+            }
+        }
+        c += ((j - i) as u64) * ((n - j) as u64);
+        i = j;
+    }
+    println!("{}", c);
 }

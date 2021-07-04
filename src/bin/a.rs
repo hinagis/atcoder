@@ -1,9 +1,8 @@
 fn main() {
     proconio::input! {
-        n: usize,
+        a: u32,
+        b: u32
     }
-    let r = n;
 
-    println!("Yes");
-    println!("{}", r);
+    println!("{}", if a <= b && 6 * a >= b {"Yes"} else {"No"});
 }

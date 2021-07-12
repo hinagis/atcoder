@@ -1,9 +1,7 @@
 fn main() {
     proconio::input! {
-        n: usize,
+        h: u32,
+        w: u32
     }
-    let r = n;
-
-    println!("Yes");
-    println!("{}", r);
+    println!("{}", if h == 1 || w == 1 {h * w} else {((h + 1) / 2) * ((w + 1) / 2)});
 }

@@ -1,9 +1,10 @@
 fn main() {
     proconio::input! {
-        n: usize,
+        n: u32,
+        a: u32,
+        x: u32,
+        y: u32,
     }
-    let r = n;
+    println!("{}", if n > a {x * a + (n - a) * y} else {x * n});
 
-    println!("Yes");
-    println!("{}", r);
 }

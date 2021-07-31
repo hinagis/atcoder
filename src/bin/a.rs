@@ -1,9 +1,8 @@
 fn main() {
     proconio::input! {
-        n: usize,
+        a: u32,
+        b: u32,
     }
-    let r = n;
 
-    println!("Yes");
-    println!("{}", r);
+    println!("{}", if a == 0 {"Silver"} else if b == 0 {"Gold"} else {"Alloy"});
 }

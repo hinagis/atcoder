@@ -2,8 +2,10 @@ fn main() {
     proconio::input! {
         n: usize,
     }
-    let r = n;
 
-    println!("Yes");
-    println!("{}", r);
+    println!("{}", match n {
+        1..=125 => 4,
+        126..=211 => 6,
+        _ => 8
+    });
 }

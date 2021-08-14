@@ -1,39 +1,57 @@
-use proconio::{input, fastout, marker::Usize1};
+use proconio::{input, marker::Usize1};
 
-#[fastout]
 fn main() {
     input! {
         n: usize,
-        uvw: [(Usize1, Usize1, u64); n - 1]
+        mut uvw: [(Usize1, Usize1, u64); n - 1]
     }
-    let mut t = vec![vec![]; n];
-    for i in 0..n - 1 {
-        let (u, v, w) = uvw[i];
-        t[u].push((v, w));
-        t[v].push((u, w));
-    }
+    uvw.sort_by(|(_, _, a), (_, _, b)| a.cmp(b));
+
+    let mut t = UT::new(n);
     let mut r = 0;
-    for i in 0..n {
-        for j in i + 1..n {
-            let mut m = 0;
-            let mut f = vec![true; n];
-            f[i] = false;
-            let mut q = std::collections::VecDeque::new();
-            q.push_back((i, 0));
-            while let Some(e) = q.pop_front() {
-                for &(v, w) in &t[e.0] {
-                    if v == j {
-                        m = w;
-                        q.clear();
-                        break;
-                    }
-                    if f[v] {
-                        q.push_back((v, e.1.max(w)));
-                    }
-                }
-            }
-            r += m;
-        }
+    for &(u, v, w) in &uvw {
+        r += w * t.size(u) as u64 * t.size(v) as u64;
+        t.unite(u, v);
     }
     println!("{}", r);
+}
+
+pub struct UT {
+    p: Vec<usize>,
+    r: Vec<bool>
+}
+
+impl UT {
+    pub fn new(n: usize) -> Self {
+        Self {
+            p: vec![1; n],
+            r: vec![true; n]
+        }
+    }
+
+    pub fn unite(&mut self, u: usize, v: usize) -> usize {
+        let (r, c) = (self.root(u), self.root(v));
+        if r == c {
+            return r;
+        }
+        let (r, c) = if self.p[r] < self.p[c] {(c, r)} else {(r, c)};
+        self.p[r] += self.p[c];
+        self.p[c] = r;
+        self.r[c] = false;
+        r
+    }
+
+    pub fn root(&mut self, u: usize) -> usize {
+        if self.r[u] {
+            return u;
+        }
+        let r = self.root(self.p[u]);
+        self.p[u] = r;
+        r
+    }
+
+    pub fn size(&mut self, u: usize) -> usize {
+        let r = self.root(u);
+        self.p[r]
+    }
 }

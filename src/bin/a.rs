@@ -1,9 +1,4 @@
 fn main() {
-    proconio::input! {
-        n: usize,
-    }
-    let r = n;
-
-    println!("Yes");
-    println!("{}", r);
+    proconio::input! {s: String}
+    println!("{}", if s == "Hello,World!" {"AC"} else {"WA"});
 }

@@ -1,9 +1,15 @@
-fn main() {
-    proconio::input! {
-        n: usize,
-    }
-    let r = n;
+use proconio::{input, fastout, marker::Chars};
 
-    println!("Yes");
-    println!("{}", r);
+#[fastout]
+fn main() {
+    input! {s: Chars}
+
+    for i in 0..s.len() - 2 {
+        print!("{}", s[i]);
+    }
+    println!("{}", match s[s.len() - 1] {
+        '0'..='2' => "-",
+        '7'..='9' => "+",
+        _ => ""
+    });
 }

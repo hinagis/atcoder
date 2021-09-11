@@ -1,9 +1,9 @@
-fn main() {
-    proconio::input! {
-        n: usize,
-    }
-    let r = n;
+use proconio::{input, marker::{Usize1, Chars}};
 
-    println!("Yes");
-    println!("{}", r);
+fn main() {
+    input! {
+        n: Usize1,
+        s: Chars
+    }
+    println!("{}", if s[n] == 'o' {"Yes"} else {"No"});
 }

@@ -1,9 +1,6 @@
-fn main() {
-    proconio::input! {
-        n: usize,
-    }
-    let r = n;
+use proconio::{input, marker::Usize1};
 
-    println!("Yes");
-    println!("{}", r);
+fn main() {
+    input! {p: [Usize1; 26]}
+    println!("{}", p.iter().map(|&c| (b'a' + c as u8) as char).collect::<String>());
 }

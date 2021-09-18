@@ -1,9 +1,13 @@
-fn main() {
-    proconio::input! {
-        n: usize,
-    }
-    let r = n;
+use proconio::{input, fastout, marker::Bytes};
 
-    println!("Yes");
-    println!("{}", r);
+#[fastout]
+fn main() {
+    input! {
+        s: [String; 3],
+        t: Bytes,
+    }
+    for &t in &t {
+        print!("{}", s[(t - b'0' - 1) as usize]);
+    }
+    println!("");
 }

@@ -1,9 +1,11 @@
-fn main() {
-    proconio::input! {
-        n: usize,
-    }
-    let r = n;
+use proconio::{input, fastout, marker::Chars};
 
-    println!("Yes");
-    println!("{}", r);
+#[fastout]
+fn main() {
+    input! {n: Chars}
+
+    for _ in 0..(4-n.len()) {
+        print!("0");
+    }
+    println!("{}", n.iter().collect::<String>());
 }

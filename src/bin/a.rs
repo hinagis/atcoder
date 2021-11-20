@@ -1,9 +1,21 @@
 fn main() {
     proconio::input! {
-        n: usize,
+        s: i32,
+        t: i32,
+        x: i32,
     }
-    let r = n;
 
-    println!("Yes");
-    println!("{}", r);
+    if s < t {
+        if x >= s && x < t {
+            println!("Yes");
+        } else {
+            println!("No");
+        }
+    } else {
+        if x >= s || x < t {
+            println!("Yes");
+        } else {
+            println!("No");
+        }
+    }
 }

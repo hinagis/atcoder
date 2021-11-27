@@ -1,9 +1,12 @@
 fn main() {
-    proconio::input! {
-        n: usize,
-    }
-    let r = n;
+    proconio::input! {s: [String; 2]}
 
-    println!("Yes");
-    println!("{}", r);
+    println!("{}",
+        if (s[0] == "#." && s[1] == ".#")
+        || (s[0] == ".#" && s[1] == "#.") {
+            "No"
+        } else {
+            "Yes"
+        }
+    );
 }

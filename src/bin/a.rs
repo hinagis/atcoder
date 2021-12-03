@@ -1,9 +1,4 @@
 fn main() {
-    proconio::input! {
-        n: usize,
-    }
-    let r = n;
-
-    println!("Yes");
-    println!("{}", r);
+    proconio::input! {n: usize}
+    println!("AGC{0: >03}", if n >= 42 {n + 1} else {n});
 }

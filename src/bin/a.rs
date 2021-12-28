@@ -1,9 +1,8 @@
-fn main() {
-    proconio::input! {
-        n: usize,
-    }
-    let r = n;
+use proconio::{input, marker::Bytes};
 
-    println!("Yes");
-    println!("{}", r);
+fn main() {
+    input! {s: Bytes}
+    let (a, b) = (s[0] - b'0', s[2] - b'0');
+
+    println!("{}", a * b);
 }

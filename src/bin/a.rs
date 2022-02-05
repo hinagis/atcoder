@@ -1,9 +1,4 @@
 fn main() {
-    proconio::input! {
-        n: usize,
-    }
-    let r = n;
-
-    println!("Yes");
-    println!("{}", r);
+    proconio::input! {n: i64}
+    println!("{}", if n == (n as i32) as i64 {"Yes"} else {"No"});
 }

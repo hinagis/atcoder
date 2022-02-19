@@ -12,29 +12,27 @@ fn main() {
 
     let mut t = vec![vec![]; n];
     for &(a, b) in &ab {
-        let (a, b) = if a < b {(a, b)} else {(b, a)};
         t[a].push(b);
+        t[b].push(a);
     }
 
-    fn dfs(t: &Vec<Vec<usize>>, x: &Vec<u32>, y: &mut Vec<Vec<u32>>, i: usize) {
-        for j in 0..t[i].len() {
-            dfs(t, x, y, t[i][j]);
-        }
-        let mut c = vec![x[i]];
-        for j in 0..t[i].len() {
-            for &y in &y[t[i][j]] {
-                c.push(y);
-            }
-            c.sort_by(|a, b| b.cmp(&a));
-            c.truncate(20);
-        }
-        y[i] = c;
-    }
-
-    let mut y = vec![vec![0; 20]; n];
-    dfs(&t, &x, &mut y, 0);
+    let mut y = vec![vec![]; n];
+    dfs(&t, &x, &mut y, 0, 0);
 
     for &(v, k) in &vk {
         println!("{}", y[v][k]);
     }
+}
+
+fn dfs(t: &Vec<Vec<usize>>, x: &Vec<u32>, y: &mut Vec<Vec<u32>>, i: usize, p: usize) -> Vec<u32> {
+    let mut c = vec![x[i]];
+    for &j in &t[i] {
+        if j != p {
+            c.append(&mut dfs(t, x, y, j, i));
+        }
+    }
+    c.sort_by(|a, b| b.cmp(&a));
+    c.resize(20, 0);
+    y[i] = c.clone();
+    c
 }

@@ -1,9 +1,4 @@
 fn main() {
-    proconio::input! {
-        n: usize,
-    }
-    let r = n;
-
-    println!("Yes");
-    println!("{}", r);
+    proconio::input! {h: f64}
+    println!("{}", (h * (12800000f64 + h)).sqrt());
 }

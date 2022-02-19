@@ -1,9 +1,4 @@
 fn main() {
-    proconio::input! {
-        n: usize,
-    }
-    let r = n;
-
-    println!("Yes");
-    println!("{}", r);
+    proconio::input! {x: i64}
+    println!("{}", (if x < 0 {x - 9} else {x}) / 10);
 }

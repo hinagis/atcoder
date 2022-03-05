@@ -1,9 +1,7 @@
-fn main() {
-    proconio::input! {
-        n: usize,
-    }
-    let r = n;
+use proconio::{input as I, marker::Chars};
 
-    println!("Yes");
-    println!("{}", r);
+fn main() {
+    I! {mut s: Chars}
+    s.sort();
+    println!("{}", s.iter().collect::<String>());
 }

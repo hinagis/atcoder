@@ -1,9 +1,8 @@
 fn main() {
     proconio::input! {
-        n: usize,
+        x: f64,
+        y: f64,
     }
-    let r = n;
-
-    println!("Yes");
-    println!("{}", r);
+    let d = (x * x + y * y).sqrt();
+    println!("{} {}", x / d, y / d);
 }

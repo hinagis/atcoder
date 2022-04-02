@@ -1,76 +1,47 @@
 use proconio::{input as I, marker::{Chars, Usize1 as U1}};
+
 fn main() {
+    const D: [(isize, isize); 4] = [(1, 1), (1, -1), (-1, -1), (-1, 1)];
+
     I! {
-        n: usize,
+        n: isize,
         a: (U1, U1),
         b: (U1, U1),
         s: [Chars; n]
     }
+
     let mut q = std::collections::VecDeque::new();
-    let mut f = vec![vec![[u32::max_value() - 1; 4]; n]; n];
-    if a.0 + 1 < n && a.1 + 1 < n && s[a.0 + 1][a.1 + 1] == '.' {
-        f[a.0 + 1][a.1 + 1][0] = 1;
-        q.push_back(((a.0 + 1, a.1 + 1), 0));
-    }
-    if a.0 + 1 < n && a.1 >= 1 && s[a.0 + 1][a.1 - 1] == '.' {
-        f[a.0 + 1][a.1 - 1][1] = 1;
-        q.push_back(((a.0 + 1, a.1 - 1), 1));
-    }
-    if a.0 >= 1 && a.1 >= 1 && s[a.0 - 1][a.1 - 1] == '.' {
-        f[a.0 - 1][a.1 - 1][2] = 1;
-        q.push_back(((a.0 - 1, a.1 - 1), 2));
-    }
-    if a.0 >= 1 && a.1 + 1 < n && s[a.0 - 1][a.1 + 1] == '.' {
-        f[a.0 - 1][a.1 + 1][3] = 1;
-        q.push_back(((a.0 - 1, a.1 + 1), 3));
+    let mut f = vec![vec![[u32::max_value(); 4]; n as usize]; n as usize];
+    for i in 0..4 {
+        let (x, y) = (a.0 as isize + D[i].0, a.1 as isize + D[i].1);
+        if x >= 0 && x < n && y >= 0 && y < n {
+            let (x, y) = (x as usize, y as usize);
+            if s[x][y] == '.' {
+                f[x][y][i] = 1;
+                q.push_back(((x, y), i));
+            }
+        }
     }
 
-    while let Some(((x, y), d)) = q.pop_front() {
-        if (x, y) == b {
-            println!("{}", f[x][y][d]);
+    while let Some(((u, v), d)) = q.pop_front() {
+        if (u, v) == b {
+            println!("{}", f[u][v][d]);
             return;
         }
-        if x + 1 < n && y + 1 < n && s[x + 1][y + 1] == '.' {
-            let c = f[x][y][d] + if d == 0 {0} else {1};
-            if c < f[x + 1][y + 1][0] {
-                f[x + 1][y + 1][0] = c;
-                if d == 0 {
-                    q.push_front(((x + 1, y + 1), 0));
-                } else {
-                    q.push_back(((x + 1, y + 1), 0));
-                }
-            }
-        }
-        if x + 1 < n && y >= 1 && s[x + 1][y - 1] == '.' {
-            let c = f[x][y][d] + if d == 1 {0} else {1};
-            if c < f[x + 1][y - 1][1] {
-                f[x + 1][y - 1][1] = c;
-                if d == 1 {
-                    q.push_front(((x + 1, y - 1), 1));
-                } else {
-                    q.push_back(((x + 1, y - 1), 1));
-                }
-            }
-        }
-        if x >= 1 && y >= 1 && s[x - 1][y - 1] == '.' {
-            let c = f[x][y][d] + if d == 2 {0} else {1};
-            if c < f[x - 1][y - 1][2] {
-                f[x - 1][y - 1][2] = c;
-                if d == 2 {
-                    q.push_front(((x - 1, y - 1), 2));
-                } else {
-                    q.push_back(((x - 1, y - 1), 2));
-                }
-            }
-        }
-        if x >= 1 && y + 1 < n && s[x - 1][y + 1] == '.' {
-            let c = f[x][y][d] + if d == 3 {0} else {1};
-            if c < f[x - 1][y + 1][3] {
-                f[x - 1][y + 1][3] = c;
-                if d == 3 {
-                    q.push_front(((x - 1, y + 1), 3));
-                } else {
-                    q.push_back(((x - 1, y + 1), 3));
+        for i in 0..4 {
+            let (x, y) = (u as isize + D[i].0, v as isize + D[i].1);
+            if x >= 0 && x < n && y >= 0 && y < n {
+                let (x, y) = (x as usize, y as usize);
+                if s[x][y] == '.' {
+                    let c = f[u][v][d] + if i == d {0} else {1};
+                    if c < f[x][y][i] {
+                        f[x][y][i] = c;
+                        if i == d {
+                            q.push_front(((x, y), i));
+                        } else {
+                            q.push_back(((x, y), i));
+                        }
+                    }
                 }
             }
         }

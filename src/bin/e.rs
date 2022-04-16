@@ -2,7 +2,7 @@ fn main() {
     proconio::input! {
         n: usize,
         k: usize,
-        xy: [(f64, f64); n]
+        xy: [(i32, i32); n]
     }
 
     if k == 1 {
@@ -22,27 +22,14 @@ fn main() {
                 f[j][i] = false;
                 let mut r = vec![i, j];
                 let mut p = 2;
-                if xy[i].0 == xy[j].0 {
-                    for k in j + 1..n {
-                        if xy[i].0 == xy[k].0 {
-                            for &r in &r {
-                                f[r][k] = false;
-                                f[k][r] = false;
-                            }
-                            r.push(k);
-                            p += 1;
+                for k in j + 1..n {
+                    if chk(&xy, i, j, k) {
+                        for &r in &r {
+                            f[r][k] = false;
+                            f[k][r] = false;
                         }
-                    }
-                } else {
-                    for k in j + 1..n {
-                        if xy[k].1 - xy[i].1 == (xy[j].1 - xy[i].1) * (xy[k].0 - xy[i].0) / (xy[j].0 - xy[i].0) {
-                            for &r in &r {
-                                f[r][k] = false;
-                                f[k][r] = false;
-                            }
-                            r.push(k);
-                            p += 1;
-                        }
+                        r.push(k);
+                        p += 1;
                     }
                 }
                 if p >= k {
@@ -52,4 +39,10 @@ fn main() {
         }
     }
     println!("{}", c);
+}
+
+fn chk(xy: &Vec<(i32, i32)>, a: usize, b: usize, c: usize) -> bool {
+	let l = (xy[b].1 - xy[a].1) * (xy[c].0 - xy[a].0);
+	let r = (xy[b].0 - xy[a].0) * (xy[c].1 - xy[a].1);
+	return l == r;
 }

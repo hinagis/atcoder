@@ -1,9 +1,11 @@
 fn main() {
-    proconio::input! {
-        n: usize,
+    proconio::input! {_: usize}
+    let mut a = Vec::with_capacity(300);
+    for i in 1..=100 {
+        a.push(i);
+        a.push(i * 100);
+        a.push(i * 10000);
     }
-    let r = n;
 
-    println!("Yes");
-    println!("{}", r);
+    println!("{}\n{}", a.len(), a.iter().map(|v| v.to_string()).collect::<Vec<_>>().join(" "));
 }

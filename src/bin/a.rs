@@ -1,9 +1,9 @@
+use proconio::{input as I, marker::Usize1 as U};
 fn main() {
-    proconio::input! {
-        n: usize,
+    I! {
+        r: U,
+        c: U,
+        a: [[String; 2]; 2]
     }
-    let r = n;
-
-    println!("Yes");
-    println!("{}", r);
+    println!("{}", a[r][c]);
 }

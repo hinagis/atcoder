@@ -1,9 +1,9 @@
 fn main() {
     proconio::input! {
         n: usize,
+        x: usize,
     }
-    let r = n;
+    let c = ((x - 1) / n) as u8;
 
-    println!("Yes");
-    println!("{}", r);
+    println!("{}", (b'A' + c) as char);
 }

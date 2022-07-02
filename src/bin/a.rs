@@ -1,9 +1,4 @@
 fn main() {
-    proconio::input! {
-        n: usize,
-    }
-    let r = n;
-
-    println!("Yes");
-    println!("{}", r);
+    proconio::input! {k: u32}
+    println!("2{}:{:02}", k / 60 + 1, k % 60);
 }

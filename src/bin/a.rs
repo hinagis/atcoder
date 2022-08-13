@@ -1,9 +1,8 @@
 fn main() {
     proconio::input! {
-        n: usize,
+        l: usize,
+        r: usize,
     }
-    let r = n;
 
-    println!("Yes");
-    println!("{}", r);
+    println!("{}", &"atcoder"[l - 1..r]);
 }

@@ -1,9 +1,8 @@
 fn main() {
     proconio::input! {
+        x: usize,
+        y: usize,
         n: usize,
     }
-    let r = n;
-
-    println!("Yes");
-    println!("{}", r);
+    println!("{}", if x * 3 <= y {n * x} else {(n % 3) * x + (n / 3) * y});
 }

@@ -1,9 +1,6 @@
-fn main() {
-    proconio::input! {
-        n: usize,
-    }
-    let r = n;
+use proconio::{input as I, marker::Chars as C};
 
-    println!("Yes");
-    println!("{}", r);
+fn main() {
+    I! {s: C}
+    println!("{}", s[s.len() / 2]);
 }

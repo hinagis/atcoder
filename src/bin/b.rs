@@ -1,9 +1,9 @@
 fn main() {
     proconio::input! {
-        n: usize,
+        s: String,
+        t: String,
     }
-    let r = n;
 
-    println!("Yes");
-    println!("{}", r);
+    println!();
+    println!("{}", if t.starts_with(&s) {"Yes"} else {"No"});
 }

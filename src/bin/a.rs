@@ -1,9 +1,7 @@
 fn main() {
     proconio::input! {
-        n: usize,
+        a: u8,
+        b: u8
     }
-    let r = n;
-
-    println!("Yes");
-    println!("{}", r);
+    println!("{}", a | b);
 }

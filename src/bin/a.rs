@@ -1,9 +1,7 @@
 fn main() {
     proconio::input! {
         n: usize,
+        a: [u32; n]
     }
-    let r = n;
-
-    println!("Yes");
-    println!("{}", r);
+    println!("{}", a.iter().fold(0, |s, a| s + a));
 }

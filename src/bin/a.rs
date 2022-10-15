@@ -1,9 +1,12 @@
 fn main() {
-    proconio::input! {
-        n: usize,
-    }
-    let r = n;
+    proconio::input! {n: u32}
+    println!("{}", f(n));
+}
 
-    println!("Yes");
-    println!("{}", r);
+fn f(k: u32) -> u32 {
+    if k == 0 {
+        1
+    } else {
+        k * f(k - 1)
+    }
 }

@@ -1,9 +1,14 @@
 fn main() {
     proconio::input! {
         n: usize,
+        h: [u32; n]
     }
-    let r = n;
+    let mut m = 0;
+    for i in 0..n {
+        if h[i] > h[m] {
+            m = i;
+        }
+    }
 
-    println!("Yes");
-    println!("{}", r);
+    println!("{}", m + 1);
 }

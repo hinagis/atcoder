@@ -1,9 +1,8 @@
-fn main() {
-    proconio::input! {
-        n: usize,
-    }
-    let r = n;
+use superslice::Ext;
+use itertools::Itertools;
 
-    println!("Yes");
-    println!("{}", r);
+fn main() {
+    proconio::input!(mut p: [u32]);
+    p.prev_permutation();
+    println!("{}", p.iter().join(" "));
 }

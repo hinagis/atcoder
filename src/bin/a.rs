@@ -1,9 +1,15 @@
-fn main() {
-    proconio::input! {
-        n: usize,
-    }
-    let r = n;
+use proconio::{input as I};
 
-    println!("Yes");
-    println!("{}", r);
+fn main() {
+    I! {
+        n: usize,
+        x: u32
+    }
+    for i in 1..=n {
+        I! {p: u32}
+        if p == x {
+            println!("{}", i);
+            return;
+        }
+    }
 }

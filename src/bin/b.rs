@@ -1,9 +1,7 @@
 fn main() {
     proconio::input! {
-        n: usize,
+        s: String,
+        t: String
     }
-    let r = n;
-
-    println!("Yes");
-    println!("{}", r);
+    println!("{}", if s.contains(&t) {"Yes"} else {"No"});
 }

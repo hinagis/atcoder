@@ -1,9 +1,6 @@
 fn main() {
-    proconio::input! {
-        n: usize,
-    }
-    let r = n;
-
-    println!("Yes");
-    println!("{}", r);
+    proconio::input! {s: String}
+    let w = s.chars().filter(|&c| c == 'w').count();
+    let v = s.len() - w;
+    println!("{}", v + w * 2);
 }

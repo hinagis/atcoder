@@ -1,9 +1,8 @@
 fn main() {
     proconio::input! {
-        n: usize,
+        h: usize,
+        _: usize,
+        s: [String; h]
     }
-    let r = n;
-
-    println!("Yes");
-    println!("{}", r);
+    println!("{}", s.iter().fold(0, |t, s| t + s.chars().filter(|&c| c == '#').count()));
 }

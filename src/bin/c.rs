@@ -1,9 +1,16 @@
-fn main() {
-    proconio::input! {
-        n: usize,
-    }
-    let r = n;
+use proconio::{input as I, marker::Chars as C};
 
-    println!("Yes");
-    println!("{}", r);
+fn main() {
+    I! {
+        s: C,
+        t: C,
+    }
+
+    for (i, &c) in s.iter().enumerate() {
+        if c != t[i] {
+            println!("{}", i + 1);
+            return;
+        }
+    }
+    println!("{}", t.len());
 }

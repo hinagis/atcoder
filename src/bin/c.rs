@@ -1,6 +1,15 @@
+use proconio::{input as I, fastout as F, marker::Chars as C};
+
+#[F]
 fn main() {
-    proconio::input! {
-        n: usize
+    I! {
+        _: usize,
+        s: C
     }
-    println!("{}", n);
+    let mut f = true;
+    for &c in &s {
+        f ^= c == '"';
+        print!("{}", if f && c == ',' {'.'} else {c});
+    }
+    println!("");
 }

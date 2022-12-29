@@ -1,6 +1,7 @@
 fn main() {
     proconio::input! {
-        n: usize
+        a: u32,
+        b: u32
     }
-    println!("{}", n);
+    println!("{}", a.pow(b));
 }

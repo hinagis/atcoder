@@ -1,6 +1,9 @@
+use proconio::{input as I, fastout as F};
+
+#[F]
 fn main() {
-    proconio::input! {
-        n: usize
+    I! {s: [String]}
+    for s in s.iter().rev() {
+        println!("{}", s);
     }
-    println!("{}", n);
 }

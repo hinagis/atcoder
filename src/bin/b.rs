@@ -1,6 +1,10 @@
+use regex::Regex;
+
 fn main() {
     proconio::input! {
-        n: usize
+        _: usize,
+        s: String
     }
-    println!("{}", n);
+    let re = Regex::new(r"na").unwrap();
+    println!("{}", re.replace_all(&s, r"nya"));
 }

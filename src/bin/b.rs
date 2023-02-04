@@ -1,6 +1,21 @@
+use proconio::{input as I, fastout as F};
+
+#[F]
 fn main() {
-    proconio::input! {
-        n: usize
+    I! {
+        n: usize,
+        k: usize
     }
-    println!("{}", n);
+    let mut d = Vec::with_capacity(k);
+    for _ in 0..k {
+        I! {s: String}
+        d.push(s);
+    }
+    d.sort();
+    for _ in k..n {
+        I! {_: String}
+    }
+    for s in &d {
+        println!("{}", s);
+    }
 }

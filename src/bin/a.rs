@@ -1,6 +1,4 @@
 fn main() {
-    proconio::input! {
-        n: usize
-    }
-    println!("{}", n);
+    proconio::input! {s: String}
+    println!("{}", s.chars().map(|c| if c == '0' {'1'} else {'0'}).collect::<String>());
 }

@@ -1,6 +1,16 @@
+use proconio::{input as I};
+
 fn main() {
-    proconio::input! {
-        n: usize
+    I! {
+        n: usize,
+        m: usize,
+        a: [u32; n]
     }
-    println!("{}", n);
+
+    let mut s = 0;
+    for _ in 0..m {
+        I! {b: usize}
+        s += a[b - 1];
+    }
+    println!("{}", s);
 }

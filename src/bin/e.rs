@@ -1,5 +1,4 @@
 use proconio::{input as I, marker::Usize1 as U};
-use std::collections::{VecDeque as V, HashSet as H};
 
 fn main() {
     I! {
@@ -7,20 +6,26 @@ fn main() {
         e: [(U, U)],
     }
 
-    let mut q = V::new();
-    let mut t = vec![H::new(); n];
+    let mut t = vec![vec![]; n];
     for &(u, v) in &e {
-        t[u].insert(v);
-        q.push_back((u, v));
+        t[u].push(v);
     }
+
     let mut r = 0;
-    while let Some((u, v)) = q.pop_front() {
-        for j in t[v].clone() {
-            if u != j && t[u].insert(j) {
-                q.push_back((u, j));
+    for i in 0..n {
+        let mut f = vec![false; n];
+        f[i] = true;
+        let mut q = std::collections::VecDeque::new();
+        q.push_back(i);
+        while let Some(j) = q.pop_front() {
+            for &k in &t[j] {
+                if f[k] {continue}
+                f[k] = true;
+                q.push_back(k);
                 r += 1;
             }
         }
-    }
-    println!("{}", r);
+    }        
+    
+    println!("{}", r - e.len());
 }

@@ -1,6 +1,4 @@
 fn main() {
-    proconio::input! {
-        n: usize
-    }
-    println!("{}", n);
+    proconio::input! {s: String}
+    println!("{}", s.to_ascii_uppercase());
 }

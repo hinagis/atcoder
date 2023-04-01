@@ -1,6 +1,15 @@
 fn main() {
     proconio::input! {
-        n: usize
+        _: usize,
+        s: String
     }
-    println!("{}", n);
+    let mut p = ' ';
+    for c in s.chars() {
+        if c == p {
+            println!("No");
+            return;
+        }
+        p = c;
+    }
+    println!("Yes");
 }

@@ -1,6 +1,9 @@
 fn main() {
     proconio::input! {
-        n: usize
+        a: u64,
+        b: u64
     }
-    println!("{}", n);
+    let c = a / b;
+
+    println!("{}", c + if a == b * c {0} else {1});
 }

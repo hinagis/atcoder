@@ -1,15 +1,23 @@
 fn main() {
     proconio::input! {
-        _n: usize,
-        mut s: String
+        _: usize,
+        s: String
     }
-    let re = regex::Regex::new(r"\([^\(\)]*\)").unwrap();
-    while true {
-        let t = re.replace_all(&s, "");
-        if s == t {
-            println!("{}", s);
-            return;
+
+    let mut t = vec![];
+    let mut p = 0;
+    for c in s.chars() {
+        if p > 0 && c == ')' {
+            while let Some(c) = t.pop() {
+                if c == '(' {break}
+            }
+            p -= 1
+        } else {
+            if c == '(' {
+                p += 1
+            }
+            t.push(c);
         }
-        s = t.to_string();
     }
+    println!("{}", t.iter().collect::<String>())
 }

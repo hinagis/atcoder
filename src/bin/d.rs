@@ -1,6 +1,15 @@
 fn main() {
     proconio::input! {
-        n: usize
+        _n: usize,
+        mut s: String
     }
-    println!("{}", n);
+    let re = regex::Regex::new(r"\([^\(\)]*\)").unwrap();
+    while true {
+        let t = re.replace_all(&s, "");
+        if s == t {
+            println!("{}", s);
+            return;
+        }
+        s = t.to_string();
+    }
 }

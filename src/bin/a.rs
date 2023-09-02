@@ -1,6 +1,8 @@
 fn main() {
     proconio::input! {
-        n: usize
+        n: u32,
+        m: u32,
+        p: u32
     }
-    println!("{}", n);
+    println!("{}", if m > n {0} else {1 + (n - m) / p});
 }

@@ -1,6 +1,14 @@
+use proconio::{input as I, marker::Bytes as B};
+
 fn main() {
-    proconio::input! {
-        n: usize
+    I! {n: B}
+    let mut d = b'9' + 1;
+    for &c in n.iter() {
+        if c >= d {
+            println!("No");
+            return;
+        }
+        d = c;
     }
-    println!("{}", n);
+    println!("Yes");
 }

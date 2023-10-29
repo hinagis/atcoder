@@ -1,12 +1,6 @@
-use proconio::{input as I, fastout as F};
+use itertools::Itertools;
 
-#[F]
 fn main() {
-    proconio::input! {
-        n: usize,
-    }
-    I! {
-        n: usize,
-    }
-    println!("{}", n);
+    proconio::input! {a: [u32]}
+    println!("{}", if a.iter().unique().count() == 1 {"Yes"} else {"No"});
 }

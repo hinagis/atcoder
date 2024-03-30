@@ -5,9 +5,10 @@ fn main() {
         b: u64,
         mut d: [u64; n],
     }
-    for i in 0..n {
-        d[i] %= a + b;
-    }
+    let c = a + b;
+    d.iter_mut().for_each(|x| *x %= c);
     d.sort();
-    println!("{}", if d[n - 1] - d[0] < a {"Yes"} else {"No"});
+    d.dedup();
+    d.push(d[0]);
+    println!("{}", if d.windows(2).any(|w| (w[0] + c - w[1]) % c < a) {"Yes"} else {"No"});
 }

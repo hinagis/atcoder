@@ -6,20 +6,17 @@ fn main() {
         n: usize,
         e: [(U, U)]
     }
-    let mut c = vec![0; n];
     let mut t = T::new(n);
-    for (i, j) in e {
-        c[i] += 1;
-        c[j] += 1;
+    for &(i, j) in &e {
         t.union(i, j);
     }
-    let mut d = vec![0; n];
+    let mut c = std::collections::HashMap::new();
     for i in 0..n {
-        d[t.find(i)] += 1;
+        *c.entry(t.find(i)).or_insert(0) += 1;
     }
     let mut r = 0;
-    for i in 0..n {
-        r += d[t.find(i)] - c[i] - 1;
+    for &v in c.values() {
+        r += v * (v - 1) / 2;
     }
-    println!("{}", r / 2);
+    println!("{}", r - e.len());
 }

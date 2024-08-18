@@ -4,18 +4,19 @@ fn main() {
         m: usize,
         a: [usize; n],
     }
-    let mut s = std::collections::HashMap::new();
-    let mut t = 0;
+    let mut r = vec![0; 2 * n];
+    for i in 0..2 * n - 1 {
+        r[i + 1] = (r[i] + a[i % n]) % m;
+    }
+    let mut b = vec![0u64; m];
     for i in 0..n {
-        t += a[i];
-        t %= m;
-        *s.entry(t).or_insert(0) += 1;
+        b[r[i]] += 1;
     }
-    let mut t = if let Some(v) = s.get(&0) {*v} else {0};
-    for i in 1..n {
-        if let Some(v) = s.get(&i) {
-            t += *v;
-        }
+    let mut s = 0;
+    for i in n..2 * n {
+        b[r[i - n]] -= 1;
+        s += b[r[i]];
+        b[r[i]] += 1;
     }
-    println!("{}", t);
+    println!("{}", s);
 }

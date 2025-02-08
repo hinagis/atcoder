@@ -1,5 +1,5 @@
 use proconio::input as I;
-
+// not cleared
 fn main() {
     I! {n: usize}
     let mut h = vec![(0f64, std::collections::HashMap::new()); n];

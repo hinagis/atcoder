@@ -1,58 +1,28 @@
 use itertools::Itertools;
-use proconio::{input as I, fastout as F};
 
-#[F]
 fn main() {
-    I! {
+    proconio::input! {
         n: usize,
         k: usize,
-        a: [u32; n],
+        a: [usize; n],
     }
-    let mut h = std::collections::HashMap::new();
-    for i in 0..n {
-        let mut g = 1;
-        let mut b = a[i];
-        let mut d = 2;
-        while d * d <= b {
-            while b % d == 0 {
-                b /= d;
-                g *= d;
-                *h.entry(g).or_insert(0) += 1;
-            }
-            d += 1;
-        }
-        if d > 1 {
-            g *= b;
-            *h.entry(g).or_insert(0) += 1;
+    let m = *a.iter().max().unwrap() as usize + 1;
+    let mut s = vec![0; m];
+    for &i in &a {
+        s[i] += 1;
+    }
+    let mut t = vec![0; m];
+    for d in 1..m {
+        for i in (d..m).step_by(d) {
+            t[d] += s[i];
         }
     }
-    dbg!(&h);
-    for i in 0..n {
-        let mut g = vec![1; 1];
-        let mut b = a[i];
-        let mut d = 2;
-        while d * d <= b {
-            while b % d == 0 {
-                for j in 0..g.len() {
-                    g.push(g[j] * d);
-                }
-                b /= d;
-            }
-            d += 1;
+    let mut u = vec![0; m];
+    for d in 1..m {
+        if t[d] < k {continue}
+        for i in (d..m).step_by(d) {
+            u[i] = u[i].max(d);
         }
-        if d > 1 {
-            for j in 0..g.len() {
-                g.push(g[j] * b);
-            }
-        }
-        let mut r = 1;
-        g.iter().unique().for_each(|&x| {
-            if let Some(&c) = h.get(&x) {
-                if c >= k {
-                    r = r.max(x);
-                }
-            }
-        });
-        println!("{}", r);
     }
+    println!("{}", a.iter().map(|&i| u[i]).join("\n"));
 }

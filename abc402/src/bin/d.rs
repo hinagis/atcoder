@@ -6,11 +6,7 @@ fn main() {
     }
     let mut c = vec![0; n];
     for &(a, b) in ab.iter() {
-        if a + b - 3 < n {
-            c[a + b - 3] += 1;
-        } else {
-            c[a + b - n - 3] += 1;
-        }
+        c[a + b - (if a + b - 3 < n {0} else {n}) - 3] += 1;
     }
     let mut t = (m - 1) * m / 2;
     for c in c {

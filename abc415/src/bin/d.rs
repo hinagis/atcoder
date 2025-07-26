@@ -1,28 +1,22 @@
+use itertools::Itertools;
+
 fn main() {
     proconio::input! {
-        n: usize,
+        mut n: usize,
         m: usize,
         mut v: [(usize, usize); m],
     }
-    v.sort_by(|a, b| b.0.cmp(&a.0));
-    let mut c = vec![(n, 0)];
+    let v = v.iter()
+        .map(|&(a, b)| (a, b, a - b))
+        .sorted_by(|a, b| a.2.cmp(&b.2))
+        .collect_vec();
+    let mut c = 0;
     for i in 0..m {
-        let (a, b) = v[i];
-        let d = n / a;
-        let e = d * b;
-        let mut p = vec![];
-        for j in 0..c.len() {
-            let (f, g) = c[j];
-            let h = f / a;
-            let k = g + h * b; 
-            if k > e {
-                p.push((f % a, k));
-            }
-        }
-        if p.is_empty() {
-            p.push((n % a, e));
-        }
-        c = p;
+        let (a, _, d) = v[i];
+        if n < a {continue}
+        let x = 0.max((n - a) / d + 1);
+        n -= x * d;
+        c += x;
     }
-    println!("{}", c.iter().fold(0, |a, &(_, b)| a.max(b)));
+    println!("{}", c);
 }

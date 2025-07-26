@@ -1,6 +1,4 @@
-use proconio::{input as I, fastout as F};
-use std::collections::{VecDeque as Q, BTreeSet as S};
-use itertools::Itertools;
+use proconio::{input as I, fastout as F, marker::Chars as C};
 
 #[F]
 fn main() {
@@ -8,24 +6,22 @@ fn main() {
     for _ in 0..t {
         I! {
             n: usize,
-            s: String
+            mut s: C
         }
-        let p = s.chars().enumerate().filter(|&(_, c)| c == '1').map(|(i, _)| i + 1).sorted().collect::<S<_>>();
-        let mut q = Q::new();
-        let mut r = "No";
-        q.push_back(0);
-        while let Some(e) = q.pop_front() {
-            if e == (1 << n) - 1 {
-                r ="Yes";
-                break;
-            }
-            for i in 0..n {
-                if e & (1 << i) != 0 {continue}
-                let b = e | (1 << i);
-                if p.contains(&b) {continue}
-                q.push_back(b);
+        s.insert(0, '0');
+        let m = 2usize.pow(n as u32);
+        let mut f = vec![false; m];
+        f[0] = true;
+        for i in 0..m {
+            if !f[i] {continue}
+            for j in 0..n {
+                let k = i | (1 << j);
+                if s[k] == '0' {
+                    f[k] = true;
+                }
             }
         }
-        println!("{}", r);
+
+        println!("{}", if f[m - 1] { "Yes" } else { "No" });
     }
 }

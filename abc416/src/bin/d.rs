@@ -12,5 +12,18 @@ fn main() {
         }
         a.sort_by(|a, b| b.cmp(a));
         b.sort();
+        let mut c = n as u64;
+        let mut i = 0;
+        for k in 0..n {
+            while i < n && a[k] + b[i] < m {
+                i += 1;
+            }
+            if i >= n {
+                c = k as u64;
+                break;
+            }
+            i += 1;
+        }
+        println!("{}", a.iter().sum::<u64>() + b.iter().sum::<u64>() - c * m);
     }
 }

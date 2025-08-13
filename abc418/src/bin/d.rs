@@ -5,32 +5,15 @@ fn main() {
         n: usize,
         t: C
     }
-    let mut c = 0;
-    let mut p = 0;
-    let mut i = 0;
-    while i < n {
+    let mut dp = vec![[0u64; 2]; n + 1];
+    for i in 0..n {
         if t[i] == '0' {
-            let mut j = i + 1;
-            if j < n {
-                if t[j] == '0' {
-                    p += 1;
-                    i = j + 1;
-                } else {
-                    while j < n && t[j] == '1' {
-                        j += 1;
-                    }
-                    let d = j - i - 1;
-                    c += d * (d + 1) / 2;
-                    if j < n {
-                        p += 1;
-                    }
-                    i = j + 1;
-                }
-            }
+            dp[i + 1][0] = dp[i][1];
+            dp[i + 1][1] = dp[i][0] + 1;
         } else {
-            p += 1;
-            i += 1;
+            dp[i + 1][0] = dp[i][0] + 1;
+            dp[i + 1][1] = dp[i][1];
         }
     }
-    println!("{}", c + p * (p + 1) / 2);
+    println!("{}", (1..=n).fold(0, |s, i| s + dp[i][0]));
 }

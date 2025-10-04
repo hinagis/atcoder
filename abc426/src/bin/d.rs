@@ -27,7 +27,6 @@ fn calc(s: &Vec<char>, n: usize, x: char, y: char) -> usize {
     while r < n && s[r] == y {
         r += 1;
     }
-    r = n.min(r + 1);
     for i in r..n {
         c += if s[i] == x {1} else {2};
     }
@@ -38,11 +37,10 @@ fn calc(s: &Vec<char>, n: usize, x: char, y: char) -> usize {
         while r < n && s[r] == x {
             r += 1;
         }
-        l = r - 1;
+        l = r;
         while r < n && s[r] == y {
             r += 1;
         }
-        r = n.min(r + 1);
         c -= (r - l) * 2;
         m = m.min(c);
     }

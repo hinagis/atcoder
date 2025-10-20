@@ -9,27 +9,39 @@ fn main() {
             c: u64,
             d: u64
         }
-        let mut s = 0;
-
-        let mut k = 10;
-        while k < d {
-            let u = ((c * k + if k == 10 {1} else {0}) as f64).sqrt().ceil() as u64;
-            let v = ((c * k + k - 1) as f64).sqrt().floor() as u64;
-            for j in u..=v {
-                if j.pow(2) as u64 / k == c {
-                    s += 1;
-                }
-            }
-            k *= 10;
-        }
-        let u = ((c * k + if k == 10 {1} else {0}) as f64).sqrt().ceil() as u64;
-        let v = ((c * k + d) as f64).sqrt().floor() as u64;
-        for j in u..=v {
-            if j.pow(2) as u64 / k == c {
-                s += 1;
-            }
-        }
-        r[i] = s;
+        r[i] = calc(c, d);
     }
     println!("{}", r.iter().join("\n"));
+}
+
+fn calc(c: u64, d: u64) -> u64 {
+	let mut n = 0;
+
+    let mut u = 1;
+    let mut v = 9;
+    let mut k = 10;
+	while u <= c + d {
+		let l = u.max(c + 1);
+		let r = v.min(c + d);
+		if l <= r {
+			let vl = c * k + l;
+			let vr = c * k + r;
+			n += f(vr) - f(vl - 1);
+		}
+		u = u * 10;
+		v = (v + 1) * 10 - 1;
+		k *= 10;
+	}
+	n
+}
+
+fn f(x: u64) -> u64 {
+	let mut y = (x as f64).sqrt() as u64;
+	while y * y > x {
+        y -= 1;
+    }
+	while (y + 1).pow(2) <= x {
+        y += 1;
+    }
+	y
 }

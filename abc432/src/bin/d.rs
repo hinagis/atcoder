@@ -30,13 +30,13 @@ fn main() {
             }
         } else {
             for (u, x, v, y) in g {
-                if b >= y {
+                if v >= a {
                     t.push((u + b, x + b, v, y));
-                } else if b < v {
+                } else if y < a {
                     t.push((u - b, x - b, v, y));
                 } else {
-                    t.push((u - a, x - a, v, b - 1));
-                    t.push((u - a, x - a, b, y));
+                    t.push((u - b, x - b, v, a - 1));
+                    t.push((u + b, x + b, a, y));
                 }
             }
         }

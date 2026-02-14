@@ -1,23 +1,23 @@
 use proconio::input as I;
-// use proconio::{input as I, fastout as F};
 
-// #[F]
 fn main() {
     I! {
         n: usize,
-        d: i64,
-        a: [i64; n]
+        d: i32,
+        a: [i32; n]
     }
+
+    let mut c = 0;
+    let mut t = std::collections::BTreeSet::new();
     let mut r = 0;
-    let mut t = std::collections::BTreeMap::new();
     for l in 0..n {
-
-        if let Some((b, c)) = t.range(..=a[r]).next_back() {
-            if (a[r] - b).abs() < d {
-
-            }
+        while r < n && t.range(a[r] - d + 1..a[r] + d).next().is_none() {
+            t.insert(a[r]);
+            r += 1;
         }
-        let c = t.range(a[r]..).next();
+        c += r - l;
+        t.remove(&a[l]);
     }
-    println!("{}", n);
+
+    println!("{c}");
 }
